@@ -1,9 +1,11 @@
 <template>
 	<cl-page :padding="20">
 		<cl-confirm ref="Confirm"> </cl-confirm>
+
 		<cl-confirm ref="Confirm2">
 			<cl-input></cl-input>
 		</cl-confirm>
+
 		<cl-confirm ref="Confirm3"> </cl-confirm>
 
 		<cl-card label="基础用法">
@@ -35,6 +37,8 @@ function open() {
 		title: "提示",
 		message: "你有一个待取信件",
 		callback(action) {
+			console.log(action);
+
 			switch (action) {
 				case "confirm":
 					ui.showToast("领取成功");
@@ -63,13 +67,15 @@ function open3() {
 		title: "提示",
 		message: "你有一个待取信件",
 		beforeClose(action, { done, showLoading, hideLoading }) {
+			console.log(action);
+
 			if (action == "confirm") {
 				showLoading();
 
 				setTimeout(() => {
 					done();
 					ui.showToast("领取成功");
-				}, 2000);
+				}, 200022);
 			} else {
 				done();
 			}

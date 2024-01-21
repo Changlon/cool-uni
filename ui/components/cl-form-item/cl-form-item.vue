@@ -5,15 +5,19 @@
 			`is-${labelPosition}`,
 			{
 				'is-error': !!message,
-				'is-required': isRequired || required,
+				'is-required': isRequired,
 			},
 		]"
-		:id="`cl-form-item--${prop}`"
+		:id="`cl-form-item--${id}`"
 		ref="cl-form-item"
 	>
 		<view
 			class="cl-form-item__label"
-			:style="{ width: labelWidth }"
+			:style="{
+				height: labelHeight,
+				lineHeight: labelHeight,
+				width: labelWidth,
+			}"
 			v-if="label || $slots.label"
 		>
 			<slot name="label">
@@ -22,14 +26,15 @@
 		</view>
 
 		<view class="cl-form-item__container">
-			<view class="cl-form-item__prefix" v-if="$slots.prefix">
-				<slot name="prefix"></slot>
-			</view>
-
-			<view class="cl-form-item__content" :class="[justify]">
+			<view
+				class="cl-form-item__content"
+				:class="[justify]"
+				:style="{
+					lineHeight: labelPosition == 'top' ? 'normal' : labelHeight,
+				}"
+			>
 				<slot></slot>
 			</view>
-
 			<view class="cl-form-item__suffix" v-if="$slots.suffix">
 				<slot name="suffix"></slot>
 			</view>
@@ -64,6 +69,7 @@ export default defineComponent({
 	props: {
 		prop: String,
 		label: String,
+		labelHeight: [String, Number],
 		labelWidth: [String, Number],
 		labelPosition: String as PropType<"left" | "right" | "top">,
 		justify: String as PropType<"start" | "center" | "end">,
@@ -88,6 +94,7 @@ export default defineComponent({
 				"form",
 				"rules",
 				"tips",
+				"labelHeight",
 				"labelWidth",
 				"labelPosition",
 				"justify",
@@ -95,8 +102,11 @@ export default defineComponent({
 				"removeField",
 				"validateOnRuleChange",
 			],
-			["clearValidate", "onError", "scrollTo"]
+			["clearValidate", "onError", "scrollTo"],
 		);
+
+		// 避免多层级带 . 符号无法识别问题
+		const id = props.prop?.replace(/\./g, "-");
 
 		// 绑定值
 		const value = ref<any>();
@@ -105,11 +115,16 @@ export default defineComponent({
 		const message = ref("");
 
 		// 是否必填
-		const isRequired = ref(false);
+		const isRequired = ref(props.required || false);
 
 		// 标题位置
 		const labelPosition = computed(() => {
 			return props.labelPosition || parent.value?.labelPosition;
+		});
+
+		// 标题高度
+		const labelHeight = computed(() => {
+			return parseRpx(props.labelHeight || parent.value?.labelHeight);
 		});
 
 		// 标题宽度
@@ -144,16 +159,18 @@ export default defineComponent({
 			const rule = props.rules || rules?.[props.prop];
 
 			if (rule) {
-				isRequired.value = false;
+				if (!isRequired.value) {
+					isRequired.value = false;
 
-				if (isArray(rule)) {
-					rule.forEach((e: any) => {
-						if (e.required) {
-							isRequired.value = e.required;
-						}
-					});
-				} else {
-					isRequired.value = rule.required;
+					if (isArray(rule)) {
+						rule.forEach((e: any) => {
+							if (e.required) {
+								isRequired.value = e.required;
+							}
+						});
+					} else {
+						isRequired.value = rule.required;
+					}
 				}
 
 				// 检验器
@@ -194,9 +211,11 @@ export default defineComponent({
 			if (prop == props.prop) {
 				uni.createSelectorQuery()
 					.in(proxy)
-					.select(`#cl-form-item--${prop}`)
+					.select(`#cl-form-item--${id}`)
 					.boundingClientRect((res) => {
-						proxy.$root.scrollTo(res.top);
+						if (res) {
+							proxy.$root.scrollTo(res.top);
+						}
 					})
 					.exec();
 			}
@@ -236,7 +255,7 @@ export default defineComponent({
 			},
 			{
 				deep: true,
-			}
+			},
 		);
 
 		// 监听cl-form加载完
@@ -247,7 +266,7 @@ export default defineComponent({
 					parent.value?.addField(props.prop, props.rules);
 				}
 			},
-			{ immediate: true }
+			{ immediate: true },
 		);
 
 		onUnmounted(() => {
@@ -256,8 +275,10 @@ export default defineComponent({
 		});
 
 		return {
+			id,
 			message,
 			isRequired,
+			labelHeight,
 			labelWidth,
 			labelPosition,
 			justify,

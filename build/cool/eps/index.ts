@@ -16,9 +16,20 @@ function getNames(v: any) {
 // 数据
 let service = {};
 let list: Eps.Entity[] = [];
+let localList: Eps.Entity[] = [];
 
 // 获取数据
 async function getData(temps?: Eps.Entity[]) {
+	// 记录本地数据
+	if (!isEmpty(temps)) {
+		localList = (temps || []).map((e) => {
+			return {
+				...e,
+				isLocal: true,
+			};
+		});
+	}
+
 	// 本地文件
 	try {
 		list = JSON.parse(readFile(join(DistPath, "eps.json")) || "[]");
@@ -39,7 +50,7 @@ async function getData(temps?: Eps.Entity[]) {
 
 			if (code === 1000) {
 				if (!isEmpty(data) && data) {
-					list = Object.values(data).flat() as Eps.Entity[];
+					merge(list, Object.values(data).flat() as Eps.Entity[]);
 				}
 			} else {
 				error(`[eps] ${message}`);
@@ -49,9 +60,9 @@ async function getData(temps?: Eps.Entity[]) {
 			error(`[eps] ${url} 服务未启动！！！`);
 		});
 
-	// 合并本地 service 数据
-	if (isArray(temps)) {
-		temps.forEach((e) => {
+	// 合并本地数据
+	if (isArray(localList)) {
+		localList.forEach((e) => {
 			const d = list.find((a) => e.prefix === a.prefix);
 
 			if (d) {
@@ -117,7 +128,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 					`${col.propertyName}?: ${getType({
 						propertyName: col.propertyName,
 						type: col.type,
-					})};`
+					})};`,
 				);
 			}
 			t.push("\n");
@@ -165,7 +176,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 				if (d[i].namespace) {
 					// 查找配置
-					const item = list.find((e) => (e.prefix || "").includes(d[i].namespace));
+					const item = list.find((e) => (e.prefix || "") === `/${d[i].namespace}`);
 
 					if (item) {
 						const t = [`interface ${name} {`];
@@ -181,7 +192,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 								// 方法名
 								const n = toCamel(a.name || last(a.path.split("/")) || "").replace(
 									/[:\/-]/g,
-									""
+									"",
 								);
 
 								if (n) {
@@ -251,12 +262,12 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 									t.push(
 										`${n}(data${q.length == 1 ? "?" : ""}: ${q.join(
-											""
-										)}): Promise<${res}>;`
+											"",
+										)}): Promise<${res}>;`,
 									);
-								}
 
-								permission.push(n);
+									permission.push(n);
+								}
 							});
 
 							// 权限标识
@@ -267,7 +278,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 							t.push(
 								`permission: { ${permission
 									.map((e) => `${e}: string;`)
-									.join("\n")} };`
+									.join("\n")} };`,
 							);
 
 							// 权限状态
@@ -278,7 +289,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 							t.push(
 								`_permission: { ${permission
 									.map((e) => `${e}: boolean;`)
-									.join("\n")} };`
+									.join("\n")} };`,
 							);
 
 							// 请求
@@ -321,7 +332,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 	`;
 
 	// 文本内容
-	const content = prettier.format(text, {
+	const content = await prettier.format(text, {
 		parser: "typescript",
 		useTabs: true,
 		tabWidth: 4,
@@ -382,9 +393,9 @@ function createService() {
 
 					// 创建权限
 					getNames(d[k]).forEach((e) => {
-						d[k].permission[e] = `${d[k].namespace.replace("admin/", "")}/${e}`.replace(
+						d[k].permission[e] = `${d[k].namespace.replace("app/", "")}/${e}`.replace(
 							/\//g,
-							":"
+							":",
 						);
 					});
 				}

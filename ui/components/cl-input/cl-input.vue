@@ -14,6 +14,7 @@
 			borderRadius: parseRpx(borderRadius),
 			height: parseRpx(height),
 			fontSize: parseRpx(fontSize),
+			padding: parseRpx(padding),
 		}"
 		@click="click"
 	>
@@ -75,6 +76,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import type { PropType } from "vue";
 import { useForm, useTap } from "../../hook";
 import { parseRpx } from "/@/cool/utils";
+import { keys } from "lodash-es";
 
 export default defineComponent({
 	name: "cl-input",
@@ -99,11 +101,15 @@ export default defineComponent({
 			type: Boolean,
 			default: true,
 		},
-		placeholderStyle: [String, Object],
+		placeholderStyle: Object,
 		placeholderClass: String,
 		readonly: Boolean,
 		disabled: Boolean,
 		height: [String, Number],
+		padding: {
+			type: [String, Number],
+			default: "0 20rpx",
+		},
 		round: Boolean,
 		borderRadius: [String, Number],
 		border: {
@@ -154,7 +160,7 @@ export default defineComponent({
 			},
 			{
 				immediate: true,
-			}
+			},
 		);
 
 		// 是否聚焦
@@ -163,6 +169,19 @@ export default defineComponent({
 		// 是否禁用
 		const isDisabled = computed(() => {
 			return form.disabled.value || props.disabled;
+		});
+
+		// 占位符
+		const placeholderStyle = computed(() => {
+			const d = {
+				lineHeight: 1,
+				color: "#a8abb2",
+				...props.placeholderStyle,
+			};
+
+			return keys(d)
+				.map((k) => `${k}:${d[k]};`)
+				.join("");
 		});
 
 		// 输入
@@ -235,6 +254,7 @@ export default defineComponent({
 			clear,
 			onKeyboardheightchange,
 			parseRpx,
+			placeholderStyle,
 		};
 	},
 });

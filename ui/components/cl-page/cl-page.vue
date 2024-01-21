@@ -1,7 +1,12 @@
 <template>
 	<view
 		class="cl-page"
-		:class="[`theme-${app.theme.name}`]"
+		:class="[
+			`theme-${app.theme.name}`,
+			{
+				'is-fullscreen': fullscreen,
+			},
+		]"
 		:style="{
 			padding: parseRpx(padding),
 		}"
@@ -21,12 +26,10 @@
 		<!-- #endif -->
 
 		<!-- 内容插槽 -->
-		<view class="cl-page__container" :style="{ height }">
-			<slot></slot>
-		</view>
+		<slot></slot>
 
 		<!-- 底部安全区域 -->
-		<view class="safe-area-bottom"></view>
+		<view class="safe-area-bottom" v-if="!fullscreen"></view>
 	</view>
 
 	<!-- 背景色 -->
@@ -39,8 +42,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, getCurrentInstance } from "vue";
-import { useApp, useCool, useGlobal } from "/@/cool";
+import { computed, defineComponent, reactive, getCurrentInstance, onMounted } from "vue";
+import { useApp, useCool } from "/@/cool";
 import { parseRpx } from "/@/cool/utils";
 
 export default defineComponent({
@@ -63,18 +66,12 @@ export default defineComponent({
 	setup(props) {
 		const { refs, setRefs, router } = useCool();
 		const app = useApp();
-		const global = useGlobal();
 		const info = router.info();
 		const { statusBarHeight = 0 } = uni.getSystemInfoSync();
 		const { proxy }: any = getCurrentInstance();
 
 		// 是否显示导航栏
 		const statusBar = router.info()?.isCustomNavbar ? props.statusBar : false;
-
-		// 内容高度
-		const height = computed(() => {
-			return props.fullscreen ? `calc(100% - ${statusBarHeight}px)` : "auto";
-		});
 
 		// 背景色
 		const background = computed(() => {
@@ -123,14 +120,21 @@ export default defineComponent({
 			} as ClConfirm.Options);
 		}
 
-		// 追加方法
-		if (router.path) {
-			global.set(`cl-page__${router.path}`, {
+		// 扩展
+		const page = router.currentPage();
+
+		if (page) {
+			page["cl-page"] = {
+				loaded: false,
 				showLoading,
 				hideLoading,
 				showToast,
 				showConfirm,
 				showTips,
+			};
+
+			onMounted(() => {
+				page["cl-page"].loaded = true;
 			});
 		}
 
@@ -145,51 +149,28 @@ export default defineComponent({
 				top -= uni.upx2px(parseInt(t));
 			}
 
-			const getPageBoundingClientRect = (): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> => {
-				return new Promise<UniApp.NodeInfo | UniApp.NodeInfo[]>(resolve => {
-					uni
-						.createSelectorQuery()
-						.in(proxy)
-						.select(".cl-page")
-						.boundingClientRect((a: UniApp.NodeInfo | UniApp.NodeInfo[]) => {
-							resolve(a);
-						})
-						.exec();
-				});
-			};
-
-			const getSafeAreaBottomBoundingClientRect = (): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> => {
-				return new Promise<UniApp.NodeInfo | UniApp.NodeInfo[]>(resolve => {
-					uni
-						.createSelectorQuery()
+			uni.createSelectorQuery()
+				.in(proxy)
+				.select(".cl-page")
+				.boundingClientRect((a) => {
+					uni.createSelectorQuery()
 						.in(proxy)
 						.select(".safe-area-bottom")
-						.boundingClientRect((b: UniApp.NodeInfo | UniApp.NodeInfo[]) => {
-							resolve(b);
+						.boundingClientRect((b) => {
+							const scrollTop = top + (a?.height || 0) - (b?.bottom || 0);
+
+							uni.pageScrollTo({
+								scrollTop,
+								duration: 100,
+							});
 						})
 						.exec();
-				});
-			};
-
-			Promise.all([getPageBoundingClientRect(), getSafeAreaBottomBoundingClientRect()])
-				.then(([a, b]) => {
-					const aArray = Array.isArray(a) ? a : [a];
-					const bArray = Array.isArray(b) ? b : [b];
-					const scrollTop = top + (aArray[0]?.height || 0) - (bArray[0]?.bottom || 0);
-
-					uni.pageScrollTo({
-						scrollTop,
-						duration: 100,
-					});
 				})
-				.catch(error => {
-					console.error("滚动失败", error);
-				});
+				.exec();
 		};
 
 		return {
 			app,
-			height,
 			background,
 			refs,
 			setRefs,

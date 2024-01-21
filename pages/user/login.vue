@@ -345,10 +345,7 @@ onReady(() => {
 	}
 
 	.other {
-		position: fixed;
-		bottom: env(safe-area-inset-bottom);
-		left: 0;
-		width: 100%;
+		margin-top: 100rpx;
 
 		.platform {
 			display: flex;
@@ -365,6 +362,7 @@ onReady(() => {
 				width: 130px;
 				margin-bottom: 28rpx;
 				border-radius: 6px;
+				background-color: #ffffff;
 
 				image {
 					height: 32rpx;

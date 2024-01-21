@@ -1,6 +1,8 @@
-page {
+/* #ifdef H5 */
+* {
 	font-family: Arial, "Microsoft Yahei", "微软雅黑";
 }
+/* #endif */
 
 // 主题
 .cl-page {
@@ -23,7 +25,7 @@ page {
 
 		.cl-button--default,
 		.cl-input,
-		.cl-select,
+		.cl-select-inner,
 		.cl-upload,
 		.cl-textarea,
 		.cl-checkbox.is-border,
@@ -35,4 +37,19 @@ page {
 			border: 0;
 		}
 	}
+}
+
+// 其他
+.mp-html {
+	img,
+	image {
+		display: block;
+		max-width: 100%;
+	}
+
+	/* #ifndef MP */
+	* {
+		margin: revert !important;
+	}
+	/* #endif */
 }
