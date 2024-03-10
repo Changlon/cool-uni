@@ -3,7 +3,7 @@
 		<view class="page-home">
 			<view class="logo">
 				<text class="name">{{ app.info.name }}</text>
-				<text class="version">v7.0.0</text>
+				<text class="version">v7.1.0</text>
 			</view>
 
 			<view class="group" v-for="(item, index) in list" :key="index">
@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { useApp, useCool } from "/@/cool";
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 import Tabbar from "./components/tabbar.vue";
 
 const { router, service } = useCool();
@@ -202,6 +202,10 @@ const list = [
 			{
 				label: "Waterfall 瀑布流",
 				link: "/pages/demo/view/waterfall",
+			},
+			{
+				label: "Scroller 滚动条",
+				link: "/pages/demo/view/scroller",
 			},
 		],
 	},

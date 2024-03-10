@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 
 const ui = useUi();
 
@@ -42,8 +42,8 @@ function open2() {
 	ActionSheet.value?.open({
 		list: [
 			{
-				label: "删除好友",
-				icon: "cl-icon-close",
+				label: "微信支付",
+				icon: "cl-icon-payment",
 			},
 		],
 	});

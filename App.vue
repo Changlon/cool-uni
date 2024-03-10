@@ -4,7 +4,8 @@ import { useStore } from "./cool";
 export default {
 	onLaunch: function () {
 		const { dict } = useStore();
-		// dict.refresh();
+		dict.refresh();
+
 		console.log("App Launch");
 	},
 	onShow: function () {
@@ -17,6 +18,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "/@/ui/index.scss";
-@import "/@/static/index.scss";
+@import "/$/cool-ui/index.scss";
+@import "/@/static/css/index.scss";
 </style>

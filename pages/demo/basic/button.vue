@@ -45,15 +45,15 @@
 			</cl-card>
 
 			<cl-card label="不同尺寸">
-				<cl-button size="large">大</cl-button>
-				<cl-button size="default">默认</cl-button>
 				<cl-button size="small">小</cl-button>
-				<cl-button :height="80" :width="200" :font-size="30">80*200</cl-button>
+				<cl-button size="default">默认</cl-button>
+				<cl-button size="large">大</cl-button>
+				<cl-button :height="90" :width="200" :font-size="34">90*200</cl-button>
 			</cl-card>
 
 			<cl-card label="图标">
 				<cl-button icon="cl-icon-search">搜索</cl-button>
-				<cl-button icon="cl-icon-good-fill">点赞</cl-button>
+				<cl-button icon="cl-icon-chart-bar">统计</cl-button>
 			</cl-card>
 
 			<cl-card label="圆角">
@@ -112,17 +112,17 @@
 			</cl-card>
 
 			<cl-card label="自定义颜色">
-				<cl-button :border="false" color="#ffffff" background-color="#626aef"
+				<cl-button :border="false" color="#ffffff" background-color="#008000"
 					>默认</cl-button
 				>
-				<cl-button color="#626aef" plain>朴素</cl-button>
+				<cl-button color="#008000" plain>朴素</cl-button>
 			</cl-card>
 		</view>
 	</cl-page>
 </template>
 
 <script lang="ts" setup>
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 
 const ui = useUi();
 

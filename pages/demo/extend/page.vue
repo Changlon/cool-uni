@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 import { useApp, useCool } from "/@/cool";
 
 const { router } = useCool();
@@ -51,12 +51,16 @@ function openToast() {
 function openConfirm() {
 	ui.showConfirm({
 		title: "提示",
+		type: "warning",
 		message: "是否要删除该联系人？",
 	});
 }
 
 function openLoading() {
-	ui.showLoading("2秒后关闭");
+	ui.showLoading({
+		text: "2秒后关闭",
+		border: false,
+	});
 
 	setTimeout(() => {
 		ui.hideLoading();

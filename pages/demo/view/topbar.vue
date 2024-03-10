@@ -1,5 +1,5 @@
 <template>
-	<cl-topbar title="Topbar 顶部导航栏"></cl-topbar>
+	<cl-topbar title="Topbar 顶部导航栏" description="小标题"></cl-topbar>
 
 	<cl-page :padding="20">
 		<cl-card label="基础用法">
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 
 const ui = useUi();
 

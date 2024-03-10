@@ -17,7 +17,9 @@
             "VideoPlayer" : {},
             "Share" : {},
             "Payment" : {},
-            "OAuth" : {}
+            "OAuth" : {},
+            "Geolocation" : {},
+            "Camera" : {}
         },
         "distribute" : {
             "android" : {
@@ -49,7 +51,7 @@
             "ios" : {
                 "capabilities" : {
                     "entitlements" : {
-                        "com.apple.developer.associated-domains" : [ "applinks:static-a6eee658-56e4-4e4d-ae72-e89f8e35406f.bspapp.com" ]
+                        "com.apple.developer.associated-domains" : []
                     }
                 },
                 "idfa" : true,
@@ -65,31 +67,33 @@
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
                         "appid" : "wx348f72db1512fa2e",
-                        "UniversalLinks" : "https://apps-static.xmonecode.com/ios/mh/"
+                        "UniversalLinks" : ""
                     }
                 },
-                "ad" : {
-                    "csj" : {},
-                    "gdt" : {}
-                },
+                "ad" : {},
                 "share" : {
                     "weixin" : {
                         "appid" : "wx348f72db1512fa2e",
-                        "UniversalLinks" : "https://apps-static.xmonecode.com/ios/mh/"
+                        "UniversalLinks" : ""
                     }
                 },
                 "oauth" : {
                     "weixin" : {
                         "appid" : "wx348f72db1512fa2e",
                         "appsecret" : "test",
-                        "UniversalLinks" : "https://apps-static.xmonecode.com/ios/mh/"
+                        "UniversalLinks" : ""
                     },
                     "apple" : {}
                 },
-                "geolocation" : {},
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
                 "push" : {
                     "unipush" : {}
-                }
+                },
+                "maps" : {}
             },
             "icons" : {
                 "android" : {
@@ -140,7 +144,8 @@
     "mp-weixin" : {
         "appid" : "wx8651c4868edbd649",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true
         },
         "usingComponents" : true
     },

@@ -2,9 +2,15 @@
 	<cl-page :padding="20">
 		<view class="page">
 			<cl-card label="基础用法">
-				<cl-form ref="Form" v-model="form" :rules="rules" :disabled="loading">
+				<cl-form
+					ref="Form"
+					v-model="form"
+					:rules="rules"
+					:disabled="loading"
+					label-position="left"
+				>
 					<cl-form-item label="活动名称" prop="name">
-						<cl-input v-model="form.name"></cl-input>
+						<cl-input v-model="form.name" placeholder="请输入活动名称"></cl-input>
 					</cl-form-item>
 
 					<cl-form-item label="活动时间" prop="date">
@@ -47,12 +53,20 @@
 						<cl-upload v-model="form.cover" />
 					</cl-form-item>
 
-					<cl-form-item label="活动海报" prop="pics" label-position="top">
-						<cl-upload v-model="form.pics" multiple />
+					<cl-form-item label="活动海报（最多上传6张）" prop="pics" label-position="top">
+						<cl-upload v-model="form.pics" multiple :limit="6" />
 					</cl-form-item>
 
 					<cl-form-item label="活动描述" prop="remark" label-position="top">
-						<cl-textarea v-model="form.remark" />
+						<cl-textarea v-model="form.remark" count placeholder="请输入活动描述" />
+					</cl-form-item>
+
+					<cl-form-item label="活动赞助商" prop="company" label-position="top">
+						<cl-input v-model="form.company" placeholder="请输入活动赞助商" />
+
+						<template #append>
+							<cl-icon name="help-border" :size="36"></cl-icon>
+						</template>
 					</cl-form-item>
 				</cl-form>
 			</cl-card>
@@ -69,7 +83,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 import { onPageScroll } from "@dcloudio/uni-app";
 
 onPageScroll((e) => {});
@@ -86,6 +100,7 @@ const form = ref({
 	remark: "",
 	cover: "",
 	pics: [],
+	company: "",
 });
 
 const rules = reactive({

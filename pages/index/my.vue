@@ -22,7 +22,7 @@
 			<view class="container">
 				<cl-list :radius="16">
 					<cl-list-item label="我的订单" @tap="toDev" />
-					<cl-list-item label="我的二维码" :arrow-icon="false">
+					<cl-list-item label="我的二维码" :arrow-icon="false" @tap="toDev">
 						<cl-icon name="qrcode" />
 					</cl-list-item>
 					<cl-list-item label="我的钱包" :arrow-icon="false">
@@ -44,7 +44,7 @@
 import { onPullDownRefresh, onShow } from "@dcloudio/uni-app";
 import { useCool, useStore } from "/@/cool";
 import Tabbar from "./components/tabbar.vue";
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 
 const { router } = useCool();
 const { user } = useStore();

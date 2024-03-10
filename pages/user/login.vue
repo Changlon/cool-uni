@@ -74,7 +74,7 @@
 
 			<!-- 其他登录方式 -->
 			<view class="other" v-if="platforms.length > 0">
-				<cl-divider width="400rpx">
+				<cl-divider width="400rpx" background-color="#ffffff">
 					<cl-text color="#ccc" value="其他登录方式"></cl-text>
 				</cl-divider>
 
@@ -98,7 +98,7 @@
 import { computed, ref } from "vue";
 import { onReady } from "@dcloudio/uni-app";
 import { useApp, useCool, useStore, useWx } from "/@/cool";
-import { useUi } from "/@/ui";
+import { useUi } from "/$/cool-ui";
 import SmsBtn from "/@/components/sms-btn.vue";
 import AgreeBtn from "/@/components/agree-btn.vue";
 

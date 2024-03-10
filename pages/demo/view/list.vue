@@ -7,7 +7,7 @@
 		<cl-card label="带图标">
 			<cl-list-item label="神仙">
 				<template #icon>
-					<image src="/pages/demo/static/avatar.png" />
+					<cl-image :size="60" src="/pages/demo/static/avatar.png" />
 				</template>
 			</cl-list-item>
 		</cl-card>
@@ -54,7 +54,7 @@
 		</cl-card>
 
 		<cl-card label="按钮组">
-			<cl-list>
+			<cl-list :radius="20">
 				<cl-list-item label="A"></cl-list-item>
 				<cl-list-item label="B"></cl-list-item>
 				<cl-list-item label="C"></cl-list-item>

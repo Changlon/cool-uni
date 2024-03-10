@@ -188,7 +188,8 @@
 				{
 					"path": "view/topbar",
 					"style": {
-						"navigationBarTitleText": "Topbar 顶部导航栏"
+						"navigationBarTitleText": "Topbar 顶部导航栏",
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -214,6 +215,12 @@
 					"path": "view/list",
 					"style": {
 						"navigationBarTitleText": "List 列表"
+					}
+				},
+				{
+					"path": "view/scroller",
+					"style": {
+						"navigationBarTitleText": "Scroller 滚动条"
 					}
 				},
 				{
@@ -339,12 +346,6 @@
 			]
 		}
 	],
-	"easycom": {
-		"autoscan": true,
-		"custom": {
-			"^cl-(.*)": "/@/ui/components/cl-$1/cl-$1.vue"
-		}
-	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "cool-uni",

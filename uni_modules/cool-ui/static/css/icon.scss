@@ -1,0 +1,9 @@
+cl-icon,
+.cl-icon {
+	display: inline-flex;
+	align-items: center;
+
+	&.is-primary {
+		color: $cl-color-primary;
+	}
+}
