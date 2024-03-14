@@ -218,6 +218,12 @@
 					}
 				},
 				{
+					"path": "view/list-index",
+					"style": {
+						"navigationBarTitleText": "ListIndex 索引列表"
+					}
+				},
+				{
 					"path": "view/scroller",
 					"style": {
 						"navigationBarTitleText": "Scroller 滚动条"
@@ -275,6 +281,12 @@
 					"path": "form/select-date",
 					"style": {
 						"navigationBarTitleText": "SelectDate 时间选择器"
+					}
+				},
+				{
+					"path": "form/select-city",
+					"style": {
+						"navigationBarTitleText": "SelectCity 城市选择器"
 					}
 				},
 				{

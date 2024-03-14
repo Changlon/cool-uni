@@ -5,7 +5,7 @@
 		<view class="page-login">
 			<!-- Logo -->
 			<view class="logo">
-				<image src="/static/logo.png" alt="" />
+				<image src="/static/logo.png" mode="aspectFill" />
 				<text>{{ app.info.name }}</text>
 			</view>
 
@@ -21,7 +21,7 @@
 							<cl-input
 								v-model="phone"
 								type="number"
-								placeholder="请输入手机号码"
+								placeholder="请填写手机号码"
 								:border="false"
 								:maxlength="11"
 								:font-size="30"
@@ -75,7 +75,7 @@
 			<!-- 其他登录方式 -->
 			<view class="other" v-if="platforms.length > 0">
 				<cl-divider width="400rpx" background-color="#ffffff">
-					<cl-text color="#ccc" value="其他登录方式"></cl-text>
+					<cl-text color="#ccc" value="其他登录方式" />
 				</cl-divider>
 
 				<view class="platform">
@@ -139,7 +139,6 @@ function getPlatforms() {
 
 	// #ifdef H5
 	if (wx.isWxBrowser()) {
-		// 显示微信登录
 		arr[1].hidden = false;
 	}
 	// #endif
@@ -148,12 +147,13 @@ function getPlatforms() {
 	arr[1].hidden = false;
 	// #endif
 
-	// 过滤
+	// 过滤隐藏的
 	arr = arr.filter((e) => !e.hidden);
 
 	// 默认第一个登录方式
 	mode.value = arr[0]?.value;
 
+	// 过滤不是当前登录方式
 	return computed(() => arr.filter((e) => e.value != mode.value));
 }
 

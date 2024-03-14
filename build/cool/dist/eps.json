@@ -1,0 +1,1 @@
+[{"prefix":"/app/test","name":"TestEntity","api":[{"path":"/page"},{"path":"/list"},{"path":"/info"},{"path":"/delete"},{"path":"/update"},{"path":"/add"}]}]
