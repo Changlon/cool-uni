@@ -65,8 +65,3 @@
 		@include color($cl-color-info);
 	}
 }
-
-.cl-tag + .cl-tag,
-cl-tag + cl-tag {
-	margin-left: 20rpx;
-}

@@ -35,13 +35,8 @@
 		<cl-card label="基础用法2">
 			<cl-banner :list="list" type="card" :height="300">
 				<template #item="{ item }">
-					<cl-skeleton :radius="12" height="100%">
-						<image
-							class="cl-banner-item__image"
-							:src="item.bg"
-							mode="aspectFill"
-							v-if="item.bg"
-						/>
+					<cl-skeleton :radius="12" height="100%" :loading="!item.bg">
+						<image class="cl-banner-item__image" :src="item.bg" mode="aspectFill" />
 					</cl-skeleton>
 				</template>
 			</cl-banner>
@@ -54,7 +49,7 @@ import { onReady } from "@dcloudio/uni-app";
 import { uniqueId } from "lodash-es";
 import { ref } from "vue";
 
-const list = ref<any[]>([{}, {}, {}, {}]);
+const list = ref<any[]>([{}, {}, {}]);
 
 function get() {
 	setTimeout(() => {
@@ -66,7 +61,7 @@ function get() {
 				name: ["小青", "小白", "小黑", "笑死"][i],
 			};
 		});
-	}, 3000);
+	}, 1500);
 }
 
 onReady(() => {
