@@ -132,10 +132,7 @@ export default defineComponent({
 		vertical: Boolean,
 		acceleration: Boolean,
 		disableProgrammaticAnimation: Boolean,
-		displayMultipleItems: {
-			type: Number,
-			default: 1,
-		},
+		displayMultipleItems: Number,
 		skipHiddenItemLayout: Boolean,
 		disableTouch: Boolean,
 		touchable: {
