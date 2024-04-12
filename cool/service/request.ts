@@ -77,6 +77,8 @@ export default function request(options: any) {
 							default:
 								reject({ message, code });
 						}
+					} else {
+						reject({ message: "服务异常" });
 					}
 				},
 
