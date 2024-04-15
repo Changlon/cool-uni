@@ -13,22 +13,14 @@
 		</template>
 
 		<!-- 空态 -->
-		<slot name="empty" v-if="isEmpty(list[0])">
+		<slot name="empty" v-if="showEmpty">
 			<cl-empty />
 		</slot>
 	</view>
 </template>
 
 <script lang="ts">
-import {
-	type PropType,
-	computed,
-	defineComponent,
-	ref,
-	nextTick,
-	getCurrentInstance,
-	onMounted,
-} from "vue";
+import { type PropType, computed, defineComponent, ref, nextTick, getCurrentInstance } from "vue";
 import { flatMap, isEmpty } from "lodash-es";
 import { parseRpx } from "/@/cool/utils";
 import { onShow } from "@dcloudio/uni-app";
@@ -77,6 +69,11 @@ export default defineComponent({
 		const columnGap = computed(() =>
 			props.direction == "vertical" ? parseRpx(props.gutter) : "none",
 		);
+
+		// 是否空
+		const showEmpty = computed(() => {
+			return list.value.filter((e) => !isEmpty(e)).length == 0;
+		});
 
 		// 刷新列表
 		function refresh(data: any[]) {
@@ -220,7 +217,7 @@ export default defineComponent({
 			append,
 			update,
 			clear,
-			isEmpty,
+			showEmpty,
 			doLayout,
 		};
 	},
