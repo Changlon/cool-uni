@@ -1,5 +1,11 @@
 <template>
-	<cl-select-popup ref="popup" title="选择节点" :max-height="maxHeight" @close="onClose">
+	<cl-select-popup
+		ref="popup"
+		title="选择节点"
+		:max-height="maxHeight"
+		:show-picker="showPicker"
+		@close="onClose"
+	>
 		<template #list>
 			<view class="cl-tree-select">
 				<cl-tree
@@ -38,6 +44,10 @@ export default defineComponent({
 		maxHeight: {
 			type: [String, Number],
 			default: 800,
+		},
+		showPicker: {
+			type: Boolean,
+			default: true,
 		},
 		...TreeProps,
 	},

@@ -109,7 +109,7 @@ export default function request(options: any) {
 								isRefreshing = false;
 							})
 							.catch((err) => {
-								isRefreshing = false;
+								user.logout();
 								reject(err);
 							});
 					}
