@@ -51,7 +51,7 @@
 	import { useCool } from "/@/cool";
 	import { useUi } from "/$/cool-ui";
 
-	const { service, router, mitt, storage, upload } = useCool();
+	const { service, router, storage, upload } = useCool();
 	const ui = useUi();
 
 	// 请求
@@ -70,10 +70,6 @@
 	// 全局事件
 	ui.showLoading();
 	ui.showToast();
-
-	// 通信
-	mitt.emit("refresh", { page: 1 });
-	mitt.on("refresh", (params) => {});
 
 	// 储存
 	storage.set("token", "a123huis");

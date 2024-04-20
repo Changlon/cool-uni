@@ -29,26 +29,24 @@
 							/>
 						</view>
 
-						<view class="next-btn">
-							<sms-btn
-								:ref="setRefs('smsBtn')"
-								:phone="phone"
-								@success="phoneLogin(false)"
-							>
-								<template #default="{ disabled, btnText }">
-									<cl-button
-										fill
-										type="primary"
-										:height="90"
-										:font-size="30"
-										:disabled="disabled"
-										@tap="phoneLogin"
-									>
-										{{ btnText }}
-									</cl-button>
-								</template>
-							</sms-btn>
-						</view>
+						<sms-btn
+							:ref="setRefs('smsBtn')"
+							:phone="phone"
+							@success="phoneLogin(false)"
+						>
+							<template #default="{ disabled, btnText }">
+								<cl-button
+									fill
+									type="primary"
+									:height="90"
+									:font-size="30"
+									:disabled="disabled"
+									@tap="phoneLogin"
+								>
+									{{ btnText }}
+								</cl-button>
+							</template>
+						</sms-btn>
 					</template>
 
 					<!-- 微信登录 -->
@@ -168,7 +166,7 @@ async function nextLogin(key: "mini" | "mp", data: any) {
 			await user.get();
 
 			// 登录跳转
-			router.nextLogin();
+			router.nextLogin(key);
 		})
 		.catch((err) => {
 			ui.showTips(err.message);

@@ -32,6 +32,7 @@ type Tabs = {
 // 路由列表
 const routes = [...ctx.pages];
 
+// 子包
 if (ctx.subPackages) {
 	ctx.subPackages.forEach((a: { pages: any[]; root: string }) => {
 		a.pages.forEach((b) => {
@@ -249,10 +250,7 @@ const router = {
 		this.push(this.pages.home);
 	},
 
-	/**
-	 * 跳转 tabbar
-	 * @param {*} name
-	 */
+	// tabbar
 	switchTab(name: string) {
 		let item = this.tabs.find((e) => e.pagePath.includes(name));
 
@@ -282,10 +280,10 @@ const router = {
 		});
 	},
 
-	// 返回登录失效页
-	nextLogin(loginType?: string) {
+	// 登录成功后操作
+	nextLogin(type?: string) {
 		const pages = getCurrentPages();
-		const index = pages.findIndex((e) => this.pages.login.includes(e.route || ""));
+		const index = pages.findIndex((e) => this.pages.login.includes(e.route!));
 
 		if (index <= 0) {
 			this.home();
@@ -296,12 +294,15 @@ const router = {
 		}
 
 		// 登录方式
-		storage.set("loginType", loginType);
+		storage.set("loginType", type);
 
 		// 登录回调
 		if (fn.afterLogin) {
 			fn.afterLogin();
 		}
+
+		// 事件
+		uni.$emit("afterLogin", { type });
 	},
 
 	// 跳转前钩子

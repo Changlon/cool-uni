@@ -6,9 +6,6 @@ export const isDev = import.meta.env.MODE === "development";
 
 // 配置
 export const config = {
-	// 版本号
-	version: "0.0.0",
-
 	// 应用信息
 	app: {
 		// 应用名称

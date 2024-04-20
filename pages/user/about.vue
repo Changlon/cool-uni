@@ -5,18 +5,11 @@
 				<image src="/static/logo.png" />
 			</view>
 
-			<cl-list>
-				<cl-list-item label="当前版本" :arrow-icon="false">
-					<cl-text color="info">{{ config.version }}</cl-text>
-				</cl-list-item>
-
-				<!-- 新版本 -->
-				<version-list-item />
-			</cl-list>
+			<!-- 版本 -->
+			<cl-version-about />
 
 			<cl-list>
 				<cl-list-item label="联系我们" />
-				<cl-list-item label="给软件评分" />
 			</cl-list>
 
 			<cl-text
@@ -26,15 +19,16 @@
 				color="info"
 				:line-height="1.2"
 				:margin="[80, 0, 0, 0]"
-				>{{ app.info.desc }}</cl-text
 			>
+				{{ app.info.desc }}
+			</cl-text>
 		</view>
 	</cl-page>
 </template>
 
 <script lang="ts" setup>
 import { onReady } from "@dcloudio/uni-app";
-import { config, useApp } from "/@/cool";
+import { useApp } from "/@/cool";
 
 const app = useApp();
 

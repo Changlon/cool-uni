@@ -107,6 +107,7 @@ function uploadAvatar(e?: { detail: { avatarUrl: string } }) {
 		uni.chooseImage({
 			count: 1,
 			success(res) {
+				// @ts-ignore
 				next(res.tempFiles[0].path);
 			},
 		});
