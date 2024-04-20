@@ -14,7 +14,7 @@
 						class="item"
 						v-for="(item2, index2) in item.children"
 						:key="index2"
-						@tap="toLink(item2.link)"
+						@tap="toLink(item2.path)"
 					>
 						<text class="label">{{ item2.label }}</text>
 
@@ -29,45 +29,48 @@
 </template>
 
 <script lang="ts" setup>
-import { useApp, useCool } from "/@/cool";
+import { useApp, useCool, module } from "/@/cool";
 import { useUi } from "/$/cool-ui";
 import Tabbar from "./components/tabbar.vue";
+import { onReady } from "@dcloudio/uni-app";
+import { ref } from "vue";
+import { isEmpty } from "lodash-es";
 
 const { router, service } = useCool();
 const ui = useUi();
 const app = useApp();
 
-const list = [
+const list = ref([
 	{
 		label: "基础组件",
 		children: [
 			{
 				label: "Button 按钮",
-				link: "/pages/demo/basic/button",
+				path: "/pages/demo/basic/button",
 			},
 			{
 				label: "Text 文本",
-				link: "/pages/demo/basic/text",
+				path: "/pages/demo/basic/text",
 			},
 			{
 				label: "Image 图片",
-				link: "/pages/demo/basic/image",
+				path: "/pages/demo/basic/image",
 			},
 			{
 				label: "Icon 图标",
-				link: "/pages/demo/basic/icon",
+				path: "/pages/demo/basic/icon",
 			},
 			{
 				label: "Tag 标签",
-				link: "/pages/demo/basic/tag",
+				path: "/pages/demo/basic/tag",
 			},
 			{
 				label: "Toast 提示",
-				link: "/pages/demo/basic/toast",
+				path: "/pages/demo/basic/toast",
 			},
 			{
 				label: "Loading 加载",
-				link: "/pages/demo/basic/loading",
+				path: "/pages/demo/basic/loading",
 			},
 		],
 	},
@@ -76,55 +79,55 @@ const list = [
 		children: [
 			{
 				label: "Input 输入框",
-				link: "/pages/demo/form/input",
+				path: "/pages/demo/form/input",
 			},
 			{
 				label: "InputNumber 计数器",
-				link: "/pages/demo/form/input-number",
+				path: "/pages/demo/form/input-number",
 			},
 			{
 				label: "Textarea 文本域",
-				link: "/pages/demo/form/textarea",
+				path: "/pages/demo/form/textarea",
 			},
 			{
 				label: "Checkbox 多选框",
-				link: "/pages/demo/form/checkbox",
+				path: "/pages/demo/form/checkbox",
 			},
 			{
 				label: "Radio 单选框",
-				link: "/pages/demo/form/radio",
+				path: "/pages/demo/form/radio",
 			},
 			{
 				label: "Select 下拉框",
-				link: "/pages/demo/form/select",
+				path: "/pages/demo/form/select",
 			},
 			{
 				label: "SelectDate 时间选择器",
-				link: "/pages/demo/form/select-date",
+				path: "/pages/demo/form/select-date",
 			},
 			{
 				label: "SelectPopup 下拉框弹窗",
-				link: "/pages/demo/form/select-popup",
+				path: "/pages/demo/form/select-popup",
 			},
 			{
 				label: "SelectCity 城市选择器",
-				link: "/pages/demo/form/select-city",
+				path: "/pages/demo/form/select-city",
 			},
 			{
 				label: "Rate 评分",
-				link: "/pages/demo/form/rate",
+				path: "/pages/demo/form/rate",
 			},
 			{
 				label: "Switch 开关",
-				link: "/pages/demo/form/switch",
+				path: "/pages/demo/form/switch",
 			},
 			{
 				label: "Upload 文件上传",
-				link: "/pages/demo/form/upload",
+				path: "/pages/demo/form/upload",
 			},
 			{
 				label: "Form 表单",
-				link: "/pages/demo/form/form",
+				path: "/pages/demo/form/form",
 			},
 		],
 	},
@@ -133,91 +136,91 @@ const list = [
 		children: [
 			{
 				label: "Avatar 头像",
-				link: "/pages/demo/view/avatar",
+				path: "/pages/demo/view/avatar",
 			},
 			{
 				label: "Badge 角标",
-				link: "/pages/demo/view/badge",
+				path: "/pages/demo/view/badge",
 			},
 			{
 				label: "Banner 轮播图",
-				link: "/pages/demo/view/banner",
+				path: "/pages/demo/view/banner",
 			},
 			{
 				label: "Card 卡片",
-				link: "/pages/demo/view/card",
+				path: "/pages/demo/view/card",
 			},
 			{
 				label: "Countdown 倒计时",
-				link: "/pages/demo/view/countdown",
+				path: "/pages/demo/view/countdown",
 			},
 			{
 				label: "Divider 分割线",
-				link: "/pages/demo/view/divider",
+				path: "/pages/demo/view/divider",
 			},
 			{
 				label: "Flex 弹性",
-				link: "/pages/demo/view/flex",
+				path: "/pages/demo/view/flex",
 			},
 			{
 				label: "Grid 宫格",
-				link: "/pages/demo/view/grid",
+				path: "/pages/demo/view/grid",
 			},
 			{
 				label: "List 列表",
-				link: "/pages/demo/view/list",
+				path: "/pages/demo/view/list",
 			},
 			{
 				label: "ListIndex 索引列表",
-				link: "/pages/demo/view/list-index",
+				path: "/pages/demo/view/list-index",
 			},
 			{
 				label: "Loadmore 加载更多",
-				link: "/pages/demo/view/loadmore",
+				path: "/pages/demo/view/loadmore",
 			},
 			{
 				label: "Noticebar 通知栏",
-				link: "/pages/demo/view/noticebar",
+				path: "/pages/demo/view/noticebar",
 			},
 			{
 				label: "Popup 弹出框",
-				link: "/pages/demo/view/popup",
+				path: "/pages/demo/view/popup",
 			},
 			{
 				label: "Progress 进度条",
-				link: "/pages/demo/view/progress",
+				path: "/pages/demo/view/progress",
 			},
 			{
 				label: "Search 搜索框",
-				link: "/pages/demo/view/search",
+				path: "/pages/demo/view/search",
 			},
 			{
 				label: "Slider 滑块",
-				link: "/pages/demo/view/slider",
+				path: "/pages/demo/view/slider",
 			},
 			{
 				label: "Tabs 选项卡",
-				link: "/pages/demo/view/tabs",
+				path: "/pages/demo/view/tabs",
 			},
 			{
 				label: "Timeline 时间线",
-				link: "/pages/demo/view/timeline",
+				path: "/pages/demo/view/timeline",
 			},
 			{
 				label: "Topbar 顶部导航栏",
-				link: "/pages/demo/view/topbar",
+				path: "/pages/demo/view/topbar",
 			},
 			{
 				label: "Waterfall 瀑布流",
-				link: "/pages/demo/view/waterfall",
+				path: "/pages/demo/view/waterfall",
 			},
 			{
 				label: "Scroller 滚动条",
-				link: "/pages/demo/view/scroller",
+				path: "/pages/demo/view/scroller",
 			},
 			{
 				label: "Skeleton 骨架图",
-				link: "/pages/demo/view/skeleton",
+				path: "/pages/demo/view/skeleton",
 			},
 		],
 	},
@@ -226,57 +229,57 @@ const list = [
 		children: [
 			{
 				label: "ActionSheet 操作菜单",
-				link: "/pages/demo/extend/action-sheet",
+				path: "/pages/demo/extend/action-sheet",
 			},
 			{
 				label: "Captcha 验证码",
-				link: "/pages/demo/extend/captcha",
+				path: "/pages/demo/extend/captcha",
 			},
 			{
 				label: "Confirm 确认框",
-				link: "/pages/demo/extend/confirm",
+				path: "/pages/demo/extend/confirm",
 			},
 			{
 				label: "Dialog 对话框",
-				link: "/pages/demo/extend/dialog",
+				path: "/pages/demo/extend/dialog",
 			},
 			{
 				label: "FilterBar 过滤栏",
-				link: "/pages/demo/extend/filter-bar",
+				path: "/pages/demo/extend/filter-bar",
 			},
 			{
 				label: "Page 页面",
-				link: "/pages/demo/extend/page",
+				path: "/pages/demo/extend/page",
 			},
 			{
 				label: "Tree 树形",
-				link: "/pages/demo/extend/tree",
+				path: "/pages/demo/extend/tree",
 			},
 			{
 				label: "Service 服务",
-				link: "/pages/demo/extend/service",
+				path: "/pages/demo/extend/service",
 			},
 		],
 	},
-];
+]);
 
-function toLink(link: string) {
+function toLink(path: string) {
 	router.push({
-		path: link,
+		path,
 		isGuard: false,
 	});
 }
 
-function get() {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve({
-				list: [1, 2, 3],
-				count: 10,
-			});
-		}, 1000);
-	});
-}
+onReady(() => {
+	const children = module.list.filter((e) => e.demo).map((e) => e.demo!);
+
+	if (!isEmpty(children)) {
+		list.value.unshift({
+			label: "插件 / 模块",
+			children,
+		});
+	}
+});
 </script>
 
 <style lang="scss" scoped>

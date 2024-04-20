@@ -28,6 +28,8 @@ export function virtual(): Plugin {
 		async handleHotUpdate({ file, server }) {
 			// 代码保存时触发
 			if (!file.includes("build/cool/dist")) {
+				createCtx();
+
 				const { service } = await createEps();
 
 				// 通知客户端刷新
@@ -55,10 +57,10 @@ export function virtual(): Plugin {
 			}
 
 			if (id === "\0virtual:ctx") {
-				const { pages } = createCtx();
+				const ctx = await createCtx();
 
 				return `
-                    export const ctx = ${JSON.stringify(JSON.parse(pages))}
+                    export const ctx = ${JSON.stringify(ctx)}
                 `;
 			}
 		},

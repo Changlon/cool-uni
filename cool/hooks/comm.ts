@@ -1,9 +1,4 @@
 import { reactive } from "vue";
-import { router } from "../router";
-import { service } from "../service";
-import { upload } from "../upload";
-import { storage } from "../utils";
-
 export function useRefs() {
 	const refs = reactive<{ [key: string]: any }>({});
 	function setRefs(name: string) {
@@ -13,14 +8,4 @@ export function useRefs() {
 	}
 
 	return { refs, setRefs };
-}
-
-export function useCool() {
-	return {
-		router,
-		service,
-		upload,
-		storage,
-		...useRefs(),
-	};
 }
