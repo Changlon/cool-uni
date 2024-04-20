@@ -27,9 +27,9 @@ export function virtual(): Plugin {
 		},
 		async handleHotUpdate({ file, server }) {
 			// 代码保存时触发
-			if (!file.includes("build/cool/dist")) {
-				createCtx();
+			createCtx();
 
+			if (!file.includes("build/cool/dist")) {
 				const { service } = await createEps();
 
 				// 通知客户端刷新
