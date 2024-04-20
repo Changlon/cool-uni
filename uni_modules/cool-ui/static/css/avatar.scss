@@ -1,9 +1,8 @@
 .cl-avatar {
-	display: inline-flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: $cl-font-size;
-	color: #fff;
 	overflow: hidden;
 	box-sizing: border-box;
 
@@ -20,6 +19,7 @@
 		justify-content: center;
 		align-items: center;
 		background-color: $cl-color-disabled;
+		color: #fff;
 	}
 
 	&__error {
@@ -28,7 +28,7 @@
 		justify-content: center;
 		text-align: center;
 		background-color: $cl-color-placeholder;
-		color: $cl-color-info;
+		color: #fff;
 	}
 
 	&__target,

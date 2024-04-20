@@ -58,7 +58,7 @@ function onUpdate() {
 	// 遍历每一个方法
 	set(eps.service);
 
-	// 合并[eps]
+	// 合并 eps
 	merge(service, eps.service);
 
 	// 合并[local]
@@ -70,13 +70,13 @@ function onUpdate() {
 					path: (e.namespace || "").replace("app/", ""),
 					value: e,
 				};
-			})
-		)
+			}),
+		),
 	);
 
 	// 提示
 	if (isDev) {
-		console.log("[eps] update");
+		console.log("[cool-eps] updated");
 	}
 }
 
@@ -97,7 +97,7 @@ export function createEps() {
 					"delete",
 					"update",
 					"add",
-				])
+				]),
 			)
 				.filter((e) => !["constructor", "namespace"].includes(e))
 				.map((e) => {

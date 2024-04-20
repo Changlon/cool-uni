@@ -1,22 +1,15 @@
 import { createPinia } from "pinia";
-import type { App } from "vue";
-import mitt from "mitt";
 import { createEps } from "./eps";
-import { getVersion } from "../utils";
-import { config } from "/@/config";
+import { createModules } from "./modules";
+import { type App } from "vue";
 
-export function bootstrap(app: App) {
-	// 通信
-	app.provide("mitt", mitt());
-
-	// 缓存
+export async function bootstrap(app: App) {
+	// 状态共享存储
 	app.use(createPinia());
 
-	// 获取版本号
-	getVersion().then((version) => {
-		config.version = version;
-	});
-
-	// 创建 eps
+	// 创建 EPS
 	createEps();
+
+	// 创建 uni_modules
+	createModules();
 }

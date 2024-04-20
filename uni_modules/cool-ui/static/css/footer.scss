@@ -1,17 +1,13 @@
 .cl-footer {
-	padding-bottom: env(safe-area-inset-bottom);
 	width: 100%;
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	z-index: 99;
+	position: relative;
 
 	&__placeholder {
 		transition: height 0.3s;
 	}
 
 	&__inner {
-		:deep(cl-button) {
+		& > :deep(cl-button) {
 			width: 100%;
 		}
 
@@ -21,6 +17,22 @@
 	}
 
 	&.is-border {
-		border-top: $cl-border-width solid $cl-color-bg;
+		&::before {
+			content: "";
+			display: block;
+			height: $cl-border-width;
+			width: 100%;
+			background-color: $cl-color-bg;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+
+	&.is-fixed {
+		padding-bottom: env(safe-area-inset-bottom);
+		position: fixed;
+		left: 0;
+		bottom: 0;
 	}
 }

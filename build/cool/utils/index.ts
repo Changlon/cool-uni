@@ -21,10 +21,20 @@ export function createDir(path: string) {
 }
 
 // 读取文件
-export function readFile(name: string) {
+export function readFile(path: string, json?: boolean) {
 	try {
-		return fs.readFileSync(name, "utf8");
-	} catch (e) {}
+		const content = fs.readFileSync(path, "utf8");
+		return json ? JSON.parse(content) : content;
+	} catch (err) {}
+
+	return "";
+}
+
+// 写入文件
+export function writeFile(path: string, data: any) {
+	try {
+		return fs.writeFileSync(path, data);
+	} catch (err) {}
 
 	return "";
 }
@@ -71,4 +81,8 @@ export function mkdirs(path: string) {
 
 export function error(message: string) {
 	console.log("\x1B[31m%s\x1B[0m", message);
+}
+
+export function success(message: string) {
+	console.log("\x1B[32m%s\x1B[0m", message);
 }

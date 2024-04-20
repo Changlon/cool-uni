@@ -31,3 +31,18 @@ export namespace Eps {
 		[key: string]: any;
 	}
 }
+
+export namespace Ctx {
+	interface Pages {
+		pages: {
+			path: string;
+			style: {
+				[key: string]: any;
+			};
+		}[];
+		subPackages: {
+			root: string;
+			pages: Pages["pages"];
+		}[];
+	}
+}

@@ -33,6 +33,7 @@
 				:placeholder-class="placeholderClass"
 				:maxlength="maxlength"
 				:cursor-spacing="cursorSpacing"
+				:confirm-type="confirmType"
 				:confirm-hold="confirmHold"
 				:adjust-position="adjustPosition"
 				:holdKeyboard="holdKeyboard"

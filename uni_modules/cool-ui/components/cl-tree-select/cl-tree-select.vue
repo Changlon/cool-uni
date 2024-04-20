@@ -1,19 +1,27 @@
 <template>
-	<cl-select-popup ref="popup" title="选择节点" :max-height="maxHeight" @close="onClose">
-		<view class="cl-tree-select">
-			<cl-tree
-				v-if="visible"
-				v-model="value"
-				:data="data"
-				:row-height="rowHeight"
-				:check-strictly="checkStrictly"
-				:default-expand-all="defaultExpandAll"
-				:auto-expand="autoExpand"
-				:accordion="accordion"
-				:multiple="multiple"
-				:keys="keys"
-			/>
-		</view>
+	<cl-select-popup
+		ref="popup"
+		title="选择节点"
+		:max-height="maxHeight"
+		:show-picker="showPicker"
+		@close="onClose"
+	>
+		<template #list>
+			<view class="cl-tree-select">
+				<cl-tree
+					v-if="visible"
+					v-model="value"
+					:data="data"
+					:row-height="rowHeight"
+					:check-strictly="checkStrictly"
+					:default-expand-all="defaultExpandAll"
+					:auto-expand="autoExpand"
+					:accordion="accordion"
+					:multiple="multiple"
+					:keys="keys"
+				/>
+			</view>
+		</template>
 
 		<template #confirm>
 			<cl-button round fill type="primary" size="large" :disabled="!isChecked" @tap="save"
@@ -36,6 +44,10 @@ export default defineComponent({
 		maxHeight: {
 			type: [String, Number],
 			default: 800,
+		},
+		showPicker: {
+			type: Boolean,
+			default: true,
 		},
 		...TreeProps,
 	},

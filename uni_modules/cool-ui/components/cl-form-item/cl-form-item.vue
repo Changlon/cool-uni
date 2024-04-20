@@ -141,7 +141,7 @@ export default defineComponent({
 		let validator: any = null;
 
 		// 监听规则校验
-		watch(() => parent.value?.rules, onRules, {
+		watch(() => [parent.value?.rules, props.rules], onRules, {
 			immediate: true,
 			deep: true,
 		});
@@ -186,7 +186,7 @@ export default defineComponent({
 		// 检验
 		function validate() {
 			if (isRequired.value) {
-				validator.validate({ [props.prop as any]: value.value }, (errors: any) => {
+				validator?.validate({ [props.prop as any]: value.value }, (errors: any) => {
 					message.value = errors ? errors[0].message : "";
 				});
 			} else {

@@ -38,7 +38,7 @@
 						},
 					]"
 				>
-					<slot :item="item" :index="index">
+					<slot name="item" :item="item" :index="index">
 						<image
 							class="cl-banner-item__image"
 							:style="{
@@ -132,10 +132,7 @@ export default defineComponent({
 		vertical: Boolean,
 		acceleration: Boolean,
 		disableProgrammaticAnimation: Boolean,
-		displayMultipleItems: {
-			type: Number,
-			default: 1,
-		},
+		displayMultipleItems: Number,
 		skipHiddenItemLayout: Boolean,
 		disableTouch: Boolean,
 		touchable: {

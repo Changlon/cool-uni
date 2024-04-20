@@ -1,28 +1,38 @@
 <template>
 	<view class="cl-footer__wrap">
-		<view class="cl-footer__placeholder" :style="{ height }"></view>
+		<view
+			class="cl-footer__placeholder"
+			:style="{ height, padding: parseRpx(padding) }"
+			v-if="fixed && visible"
+		></view>
 
 		<view
 			class="cl-footer"
 			:class="{
 				'is-border': border,
+				'is-fixed': fixed,
 			}"
 			:style="{
 				backgroundColor,
-				visibility: height != '0px' ? 'visible' : 'hidden',
+				visibility: visible ? 'visible' : 'hidden',
 				bottom: parseRpx(bottom),
+				zIndex,
 			}"
 		>
 			<view
-				class="cl-footer__inner"
-				:class="{
-					'is-flex': flex,
-				}"
+				class="cl-footer__wrap"
 				:style="{
 					padding: parseRpx(padding),
 				}"
 			>
-				<slot> </slot>
+				<view
+					class="cl-footer__inner"
+					:class="{
+						'is-flex': flex,
+					}"
+				>
+					<slot> </slot>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -54,6 +64,13 @@ export default defineComponent({
 			type: [String, Number],
 			default: "24rpx 36rpx",
 		},
+		// 固定高
+		height: [String, Number],
+		// 层级
+		zIndex: {
+			type: Number,
+			default: 99,
+		},
 		// 距离底部多少
 		bottom: {
 			type: [String, Number],
@@ -61,6 +78,11 @@ export default defineComponent({
 		},
 		// 是否带上边框
 		border: Boolean,
+		// 是否固定底部定位
+		fixed: {
+			type: Boolean,
+			default: true,
+		},
 		// 是否 flex 布局
 		flex: {
 			type: Boolean,
@@ -73,14 +95,39 @@ export default defineComponent({
 		},
 		// 监听对象
 		vt: null,
-		// 监听高度
-		vh: Number,
 	},
 
 	setup(props) {
 		const instance = getCurrentInstance();
 
+		// 底部高度
 		const height = ref();
+
+		// 是否可见
+		const visible = computed(() => {
+			return parseInt(height.value) != 0;
+		});
+
+		// 重新计算
+		async function update() {
+			if (props.height) {
+				height.value = parseRpx(props.height);
+				return false;
+			}
+
+			await sleep(props.delay);
+			await nextTick();
+
+			uni.createSelectorQuery()
+				.in(instance?.proxy)
+				.select(".cl-footer__inner")
+				.boundingClientRect((rect) => {
+					if (rect) {
+						height.value = Math.floor(rect.height || 0) + "px";
+					}
+				})
+				.exec();
+		}
 
 		watch(
 			() => props.vt,
@@ -92,48 +139,13 @@ export default defineComponent({
 			},
 		);
 
-		const vh = computed(() => {
-			let v = 0;
-
-			if (props.vh) {
-				v = props.vh;
-			} else {
-				const [top, right, bottom, left] = parseRpx(props.padding).split(" ");
-
-				if (top && bottom) {
-					v = parseInt(top) + parseInt(bottom);
-				} else if (top) {
-					v = parseInt(top) * 2;
-				}
-			}
-
-			return uni.upx2px(v);
-		});
-
-		async function update() {
-			await sleep(props.delay);
-			await nextTick();
-
-			uni.createSelectorQuery()
-				.in(instance?.proxy)
-				.select(".cl-footer")
-				.boundingClientRect((rect) => {
-					if (rect) {
-						const a = Math.floor(rect.height || 0);
-						const b = Math.floor(vh.value);
-
-						height.value = a > b ? `${rect.height}px` : "0px";
-					}
-				})
-				.exec();
-		}
-
 		onMounted(() => {
 			update();
 		});
 
 		return {
 			height,
+			visible,
 			update,
 			parseRpx,
 		};

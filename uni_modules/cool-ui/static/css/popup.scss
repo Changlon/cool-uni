@@ -42,6 +42,17 @@
 		transition: all 0.3s;
 		box-sizing: border-box;
 
+		&__header {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			line-height: 1;
+			font-size: 30rpx;
+			height: 90rpx;
+			letter-spacing: 1rpx;
+			font-weight: 500;
+		}
+
 		&__container {
 			height: 100%;
 			box-sizing: border-box;
@@ -49,10 +60,10 @@
 
 		&__close {
 			position: absolute;
-			bottom: -110rpx;
-			left: calc(50% - 36rpx);
-			color: #fff;
-			font-size: 60rpx;
+			top: 26rpx;
+			right: 26rpx;
+			font-size: 38rpx;
+			line-height: 1;
 		}
 	}
 

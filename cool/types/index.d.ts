@@ -1,3 +1,22 @@
+export declare interface ModuleConfig {
+	name?: string;
+	description?: string;
+	order?: number;
+	demo?: { label: string; path: string };
+	options?: {
+		[key: string]: any;
+	};
+	onLoad?(options?: any): any;
+}
+
+export declare interface Module extends ModuleConfig {
+	name: string;
+	options: {
+		[key: string]: any;
+	};
+	[key: string]: any;
+}
+
 export namespace User {
 	interface Token {
 		token: string;

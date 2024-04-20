@@ -38,7 +38,10 @@
 			<cl-text value="关于" :margin="[30, 0, 20, 20]" block />
 
 			<cl-list :radius="16">
-				<cl-list-item label="关于我们" @tap="router.push('/pages/user/about')" />
+				<cl-list-item
+					:label="`关于${app.info.name}`"
+					@tap="router.push('/pages/user/about')"
+				/>
 
 				<cl-list-item
 					label="用户协议"
@@ -64,9 +67,6 @@
 						})
 					"
 				/>
-
-				<!-- 版本更新 -->
-				<version-list-item />
 			</cl-list>
 
 			<cl-list :radius="16">
@@ -81,12 +81,13 @@
 
 <script lang="ts" setup>
 import { onReady } from "@dcloudio/uni-app";
-import { useCool, useStore } from "/@/cool";
+import { useApp, useCool, useStore } from "/@/cool";
 import { useUi } from "/$/cool-ui";
 
 const { router, upload } = useCool();
 const { user } = useStore();
 const ui = useUi();
+const app = useApp();
 
 // 上传头像
 function uploadAvatar(e?: { detail: { avatarUrl: string } }) {
@@ -106,6 +107,7 @@ function uploadAvatar(e?: { detail: { avatarUrl: string } }) {
 		uni.chooseImage({
 			count: 1,
 			success(res) {
+				// @ts-ignore
 				next(res.tempFiles[0].path);
 			},
 		});

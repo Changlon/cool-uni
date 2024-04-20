@@ -11,13 +11,19 @@
 		<template v-else-if="direction === 'horizontal'">
 			<slot :list="list"></slot>
 		</template>
+
+		<!-- 空态 -->
+		<slot name="empty" v-if="showEmpty">
+			<cl-empty />
+		</slot>
 	</view>
 </template>
 
 <script lang="ts">
 import { type PropType, computed, defineComponent, ref, nextTick, getCurrentInstance } from "vue";
-import { isEmpty } from "lodash-es";
+import { flatMap, isEmpty } from "lodash-es";
 import { parseRpx } from "/@/cool/utils";
+import { onShow } from "@dcloudio/uni-app";
 
 export default defineComponent({
 	name: "cl-waterfall",
@@ -53,6 +59,9 @@ export default defineComponent({
 		// 列表
 		const list = ref<any[]>([]);
 
+		// 每次追加的数据
+		let data: any[] = [];
+
 		// 列数量
 		const columnCount = computed(() => (props.direction == "vertical" ? props.column : "none"));
 
@@ -60,6 +69,11 @@ export default defineComponent({
 		const columnGap = computed(() =>
 			props.direction == "vertical" ? parseRpx(props.gutter) : "none",
 		);
+
+		// 是否空
+		const showEmpty = computed(() => {
+			return list.value.filter((e) => !isEmpty(e)).length == 0;
+		});
 
 		// 刷新列表
 		function refresh(data: any[]) {
@@ -86,13 +100,20 @@ export default defineComponent({
 
 		// 计算高度，一个个往列表追加
 		async function append(arr: any[]) {
-			for (let i in arr) {
+			data = arr;
+
+			for (let i = 0; i < arr.length; i++) {
 				const next = async () => {
-					const rects: any = await getRect();
+					const rects = await getRect();
+
+					// 获取不到的时候阻断掉
+					if (isEmpty(rects) && i !== 0) {
+						return false;
+					}
 
 					// 获取 cl-waterfall-column 的高度，比较后在最小的列中塞入
 					return Promise.all(rects).then((res) => {
-						let colsHeight = res.map((e: any) => e.height);
+						let colsHeight = res.map((e) => e.height);
 
 						let minH = Math.min(...colsHeight);
 						let index = colsHeight.indexOf(minH);
@@ -101,7 +122,7 @@ export default defineComponent({
 							index = 0;
 						}
 
-						list.value[index].push(arr[i]);
+						list.value[index]?.push(arr[i]);
 
 						return true;
 					});
@@ -141,7 +162,7 @@ export default defineComponent({
 		}
 
 		// 获取列
-		function getRect() {
+		function getRect(): Promise<any> {
 			return new Promise((resolve) => {
 				// #ifdef MP
 				let timer: any = null;
@@ -155,7 +176,7 @@ export default defineComponent({
 						}, 50);
 					} else {
 						clearTimeout(timer);
-						let arr = children.filter((e) => e.getRect).map((e) => e.getRect());
+						const arr = children.filter((e) => e.getRect).map((e) => e.getRect());
 						resolve(arr);
 					}
 				}
@@ -175,6 +196,18 @@ export default defineComponent({
 			});
 		}
 
+		// 重新布局，在加载中切换页面导致计算错误，返回页面时 onShow 重新计算
+		function doLayout() {
+			// 列空的时候 重新追加数据
+			if (isEmpty(flatMap(list.value)) && !isEmpty(data)) {
+				append(data);
+			}
+		}
+
+		onShow(() => {
+			doLayout();
+		});
+
 		return {
 			visible,
 			list,
@@ -184,6 +217,8 @@ export default defineComponent({
 			append,
 			update,
 			clear,
+			showEmpty,
+			doLayout,
 		};
 	},
 });

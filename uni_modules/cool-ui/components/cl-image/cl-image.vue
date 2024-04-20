@@ -37,6 +37,8 @@
 				@error="handleError"
 				@load="handleLoad"
 			/>
+
+			<slot></slot>
 		</template>
 	</view>
 </template>
@@ -54,7 +56,10 @@ export default defineComponent({
 		// 图片地址
 		src: String,
 		// 图片裁剪、缩放的模式
-		mode: String,
+		mode: {
+			type: String,
+			default: "aspectFill",
+		},
 		// 图片大小
 		size: {
 			type: [String, Number, Array],
