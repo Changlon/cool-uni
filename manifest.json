@@ -153,8 +153,8 @@
     "mp-weixin" : {
         "appid" : "wx8651c4868edbd649",
         "setting" : {
-            "urlCheck" : false,
-            "es6" : true
+            "urlCheck" : true,
+            "es6" : false
         },
         "usingComponents" : true
     },

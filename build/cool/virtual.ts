@@ -25,20 +25,17 @@ export function virtual(): Plugin {
 				next();
 			});
 		},
-		async handleHotUpdate({ file, server }) {
-			// 代码保存时触发
-			createCtx();
+		handleHotUpdate({ file, server }) {
+			if (!["pages.json", "dist"].some((e) => file.includes(e))) {
+				createCtx();
 
-			if (!file.includes("build/cool/dist")) {
-				const { service } = await createEps();
-
-				// 通知客户端刷新
-				server.ws.send({
-					type: "custom",
-					event: "eps-update",
-					data: {
-						service,
-					},
+				createEps().then((data) => {
+					// 通知客户端刷新
+					server.ws.send({
+						type: "custom",
+						event: "eps-update",
+						data,
+					});
 				});
 			}
 		},

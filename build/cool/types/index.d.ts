@@ -33,16 +33,22 @@ export namespace Eps {
 }
 
 export namespace Ctx {
-	interface Pages {
-		pages: {
-			path: string;
-			style: {
-				[key: string]: any;
-			};
-		}[];
-		subPackages: {
-			root: string;
-			pages: Pages["pages"];
-		}[];
+	type Pages = {
+		path?: string;
+		style?: {
+			[key: string]: any;
+		};
+		[key: string]: any;
+	}[];
+
+	type SubPackages = {
+		root?: string;
+		pages?: Pages;
+		[key: string]: any;
+	}[];
+
+	interface Data {
+		pages: Pages;
+		subPackages: SubPackages;
 	}
 }

@@ -2,13 +2,20 @@ import { join } from "path";
 import { readFile, writeFile } from "../utils";
 import { glob } from "glob";
 import type { Ctx } from "../types";
-import { assign, isEqual } from "lodash";
+import { assign, cloneDeep, isEqual } from "lodash";
 
 export async function createCtx() {
 	const filePath = join(__dirname, "../../../pages.json");
 
 	// pages.json 的页面配置
-	const ctx: Ctx.Pages = readFile(filePath, true);
+	const ctx: Ctx.Data = readFile(filePath, true);
+
+	// 做比较
+	const ctxData = cloneDeep(ctx);
+
+	// 删除临时页面
+	ctx.pages = ctx.pages.filter((e) => !e.isTemp);
+	ctx.subPackages = ctx.subPackages.filter((e) => !e.isTemp);
 
 	// 加载 uni_modules 配置文件
 	const files = await glob(join(__dirname, "../../../uni_modules/**/pages_init.json"), {
@@ -16,20 +23,17 @@ export async function createCtx() {
 		withFileTypes: true,
 	});
 
-	// 是否有更新
-	let isChange = false;
-
 	for (const file of files) {
 		if (file.isFile()) {
-			const { pages = [], subPackages = [] }: Ctx.Pages = readFile(
+			const { pages = [], subPackages = [] }: Ctx.Data = readFile(
 				join(file.path, file.name),
 				true,
 			);
 
-			const list: any[] = [...pages, ...subPackages];
-
 			// 合并到 pages 中
-			list.forEach((e) => {
+			[...pages, ...subPackages].forEach((e) => {
+				e.isTemp = true;
+
 				const isSub = !!e.root;
 
 				const d = isSub
@@ -37,11 +41,7 @@ export async function createCtx() {
 					: ctx.pages.find((a) => a.path == e.path);
 
 				if (d) {
-					if (!isEqual(d, e)) {
-						assign(d, e);
-					} else {
-						return false;
-					}
+					assign(d, e);
 				} else {
 					if (isSub) {
 						ctx.subPackages.unshift(e);
@@ -49,14 +49,12 @@ export async function createCtx() {
 						ctx.pages.unshift(e);
 					}
 				}
-
-				isChange = true;
 			});
 		}
 	}
 
-	// 更新 pages.json
-	if (isChange) {
+	// 是否需要更新 pages.json
+	if (!isEqual(ctxData, ctx)) {
 		console.log("[cool-ctx] pages updated");
 		writeFile(filePath, JSON.stringify(ctx, null, 4));
 	}
