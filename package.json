@@ -1,6 +1,6 @@
 {
 	"name": "cool-uni",
-	"version": "7.2.0",
+	"version": "7.3.0",
 	"license": "MIT",
 	"dependencies": {
 		"@dcloudio/uni-app": "3.0.0-3081220230817001",
