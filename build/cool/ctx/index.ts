@@ -18,7 +18,7 @@ export async function createCtx() {
 	ctx.subPackages = ctx.subPackages.filter((e) => !e.isTemp);
 
 	// 加载 uni_modules 配置文件
-	const files = await glob(join(__dirname, "../../../uni_modules/**/pages_init.json"), {
+	const files = await glob(join(__dirname, "../../../uni_modules") + "/**/pages_init.json", {
 		stat: true,
 		withFileTypes: true,
 	});
