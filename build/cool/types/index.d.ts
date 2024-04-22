@@ -48,7 +48,9 @@ export namespace Ctx {
 	}[];
 
 	interface Data {
+		appid: string;
 		pages: Pages;
 		subPackages: SubPackages;
+		[key: string]: any;
 	}
 }

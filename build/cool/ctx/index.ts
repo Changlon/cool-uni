@@ -1,8 +1,9 @@
 import { join } from "path";
 import { readFile, writeFile } from "../utils";
 import { glob } from "glob";
-import type { Ctx } from "../types";
 import { assign, cloneDeep, isEqual } from "lodash";
+import manifest from "../../../manifest.json";
+import type { Ctx } from "../types";
 
 export async function createCtx() {
 	const filePath = join(__dirname, "../../../pages.json");
@@ -58,6 +59,9 @@ export async function createCtx() {
 		console.log("[cool-ctx] pages updated");
 		writeFile(filePath, JSON.stringify(ctx, null, 4));
 	}
+
+	// appid
+	ctx.appid = manifest.appid;
 
 	return ctx;
 }
