@@ -2,29 +2,15 @@ import type { Plugin } from "vite";
 import { createEps } from "./eps";
 import { createCtx } from "./ctx";
 
-export function virtual(): Plugin {
+export async function virtual(): Promise<Plugin> {
 	const virtualModuleIds = ["virtual:eps", "virtual:ctx"];
+
+	const { service } = await createEps();
+	const ctx = await createCtx();
 
 	return {
 		name: "vite-cool-virtual",
 		enforce: "pre",
-		configureServer(server) {
-			server.middlewares.use(async (req, res, next) => {
-				// 页面刷新时触发
-				if (req.url == "/@vite/client") {
-					// 重新加载虚拟模块
-					virtualModuleIds.forEach((vm) => {
-						const mod = server.moduleGraph.getModuleById(`\0${vm}`);
-
-						if (mod) {
-							server.moduleGraph.invalidateModule(mod);
-						}
-					});
-				}
-
-				next();
-			});
-		},
 		handleHotUpdate({ file, server }) {
 			if (!["pages.json", "dist"].some((e) => file.includes(e))) {
 				createCtx();
@@ -44,21 +30,16 @@ export function virtual(): Plugin {
 				return "\0" + id;
 			}
 		},
-		async load(id) {
+		load(id) {
 			if (id === "\0virtual:eps") {
-				const { service } = await createEps();
-
 				return `
 					export const eps = ${JSON.stringify({ service })}
 				`;
 			}
-
 			if (id === "\0virtual:ctx") {
-				const ctx = await createCtx();
-
 				return `
-                    export const ctx = ${JSON.stringify(ctx)}
-                `;
+					export const ctx = ${JSON.stringify(ctx)}
+				`;
 			}
 		},
 	};
