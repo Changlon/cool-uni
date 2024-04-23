@@ -1,19 +1,18 @@
-import path from "path";
-import type { UserConfig } from "vite";
-//@ts-ignore
 import uni from "@dcloudio/vite-plugin-uni"; // ！此依赖不能安装
-import { cool } from "./build/cool";
+import path from "path";
+import { defineConfig } from "vite";
+import { cool } from "@cool-vue/vite-plugin";
 import { proxy } from "./config/proxy";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, dir);
 }
 
-// https://vitejs.dev/config/
+// https://vitejs.dev/config
 
-export default (): UserConfig => {
+export default defineConfig(() => {
 	return {
-		plugins: [uni(), cool()],
+		plugins: [uni(), cool({ type: "app", proxy })],
 		server: {
 			port: 9900,
 			proxy,
@@ -28,4 +27,4 @@ export default (): UserConfig => {
 			},
 		},
 	};
-};
+});

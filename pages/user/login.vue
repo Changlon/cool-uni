@@ -160,7 +160,9 @@ const platformsEnv = computed(() => {
 	arr = arr.filter((e) => !e.hidden);
 
 	// 默认第一个登录方式
-	mode.value = arr[0]?.value;
+	if (!mode.value) {
+		mode.value = arr[0]?.value;
+	}
 
 	// 过滤不是当前登录方式
 	return arr.filter((e) => e.value != mode.value);
