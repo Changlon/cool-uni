@@ -15,7 +15,7 @@
 			<text class="unit" v-if="unit">{{ unit }}</text>
 
 			<input
-				type="number"
+				:type="inputType"
 				v-model="value"
 				:disabled="isDisabled"
 				:focus="isFocus"
@@ -88,6 +88,11 @@ export default defineComponent({
 		// 监听最大最小值变化
 		watch(() => props.max, update);
 		watch(() => props.min, update);
+
+		// 输入框类型
+		const inputType = computed(() => {
+			return props.precision ? "digit" : "number";
+		});
 
 		// 是否禁用
 		const isDisabled = computed(() => disabled.value || props.disabled);
@@ -188,6 +193,7 @@ export default defineComponent({
 			isDisabled,
 			isPlus,
 			isMinus,
+			inputType,
 			onPlus,
 			onMinus,
 			onBlur,
