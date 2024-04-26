@@ -12,7 +12,13 @@ function resolve(dir: string) {
 
 export default defineConfig(() => {
 	return {
-		plugins: [uni(), cool({ type: "app", proxy })],
+		plugins: [
+			uni(),
+			cool({
+				type: "app",
+				proxy,
+			}),
+		],
 		server: {
 			port: 9900,
 			proxy,

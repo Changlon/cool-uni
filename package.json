@@ -17,7 +17,7 @@
 		"node": ">= 16"
 	},
 	"devDependencies": {
-		"@cool-vue/vite-plugin": "7.0.1",
+		"@cool-vue/vite-plugin": "7.1.0",
 		"@dcloudio/types": "^3.4.8",
 		"@types/lodash-es": "^4.17.12",
 		"@types/md5": "^2.3.2",
