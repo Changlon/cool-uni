@@ -223,7 +223,11 @@ const router = {
 
 	// 后退
 	back(options?: UniApp.NavigateBackOptions) {
-		uni.navigateBack(options || {});
+		if (this.isFirstPage()) {
+			this.home();
+		} else {
+			uni.navigateBack(options || {});
+		}
 	},
 
 	// 执行当前页面的某个方法
