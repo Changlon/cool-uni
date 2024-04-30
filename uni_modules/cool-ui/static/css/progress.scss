@@ -6,7 +6,6 @@
 	&-bar {
 		box-sizing: border-box;
 		flex: 1;
-		margin-right: 10rpx;
 
 		&__outer {
 			border-radius: 50rpx;
@@ -36,6 +35,7 @@
 		color: #606266;
 		font-size: 24rpx;
 		text-align: left;
+		margin-left: 10rpx;
 	}
 
 	&__icon {
