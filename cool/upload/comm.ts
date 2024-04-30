@@ -7,7 +7,7 @@ function parse(rules: string[], { url, size }: { url: string; size: Size }) {
 		return "";
 	}
 
-	if (url.indexOf("blob:") >= 0) {
+	if (url.startsWith("blob:") || url.startsWith("file:///")) {
 		return url;
 	}
 
