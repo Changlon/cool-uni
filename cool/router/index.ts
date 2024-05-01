@@ -235,7 +235,7 @@ const router = {
 		const { $vm } = this.info()!;
 
 		if ($vm) {
-			if ($vm.$.exposed[name]) {
+			if ($vm.$.exposed?.[name]) {
 				return $vm.$.exposed[name](data);
 			}
 		}
