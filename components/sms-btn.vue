@@ -16,7 +16,12 @@
 			</cl-button>
 		</slot>
 
-		<cl-popup v-model="captcha.visible" :padding="40" border-radius="24rpx">
+		<cl-popup
+			v-model="captcha.visible"
+			:ref="setRefs('popup')"
+			:padding="40"
+			border-radius="24rpx"
+		>
 			<cl-loading-mask :loading="captcha.loading">
 				<view class="sms-popup">
 					<view class="head">
@@ -32,7 +37,7 @@
 							:maxlength="4"
 							:height="70"
 							:clearable="false"
-							focus
+							:focus="refs.popup?.isFocus"
 							:border="false"
 							background-color="#f7f7f7"
 							@confirm="send"
@@ -77,7 +82,7 @@ const props = defineProps({
 
 const emit = defineEmits(["success"]);
 
-const { service } = useCool();
+const { service, refs, setRefs } = useCool();
 const ui = useUi();
 
 // 验证码
