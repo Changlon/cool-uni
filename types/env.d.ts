@@ -1,7 +1,7 @@
-/// <reference types="vite/client" />
-/// <reference types="@dcloudio/types/uni-app" />
-/// <reference types="../build/cool/dist/eps" />
-/// <reference types="../uni_modules/cool-ui/types" />
+/// <reference types="vite/client.d.ts" />
+/// <reference types="@dcloudio/types/uni-app/index.d.ts" />
+/// <reference types="../build/cool/eps.d.ts" />
+/// <reference types="../uni_modules/cool-ui/types/index.d.ts" />
 
 declare module "*.vue" {
 	import { DefineComponent } from "vue";
@@ -12,3 +12,4 @@ declare module "*.vue" {
 
 declare module "virtual:ctx";
 declare module "virtual:eps";
+declare module "@dcloudio/vite-plugin-uni";

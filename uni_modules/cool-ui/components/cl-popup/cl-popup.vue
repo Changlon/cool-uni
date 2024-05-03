@@ -118,6 +118,12 @@ export default defineComponent({
 		// 是否可见
 		const visible = ref(false);
 
+		// 是否已打开
+		const isOpened = ref(false);
+
+		// 是否已关闭
+		const isClosed = ref(true);
+
 		// 动画状态
 		const status = ref(false);
 
@@ -125,7 +131,18 @@ export default defineComponent({
 		const zIndex = ref(0);
 
 		// 计时器
-		let timer: any = null;
+		let timer: any;
+
+		// 是否聚焦
+		const isFocus = computed(() => {
+			// #ifdef MP
+			return isOpened.value;
+			// #endif
+
+			// #ifndef MP
+			return true;
+			// #endif
+		});
 
 		// 高
 		const height = computed(() => {
@@ -186,6 +203,9 @@ export default defineComponent({
 				// 显示内容
 				visible.value = true;
 
+				// 未打开
+				isClosed.value = false;
+
 				emit("update:modelValue", true);
 				emit("open");
 
@@ -197,6 +217,8 @@ export default defineComponent({
 
 					// 等待动画结束
 					timer = setTimeout(() => {
+						// 已打开
+						isOpened.value = true;
 						emit("opened");
 					}, 350);
 				}, 50);
@@ -207,6 +229,8 @@ export default defineComponent({
 		function close() {
 			if (status.value) {
 				const done = () => {
+					isOpened.value = false;
+
 					// 关闭动画
 					status.value = false;
 					emit("close");
@@ -217,6 +241,9 @@ export default defineComponent({
 						// 隐藏内容
 						visible.value = false;
 						emit("update:modelValue", false);
+
+						// 已关闭
+						isClosed.value = true;
 						emit("closed");
 					}, 300);
 				};
@@ -250,6 +277,9 @@ export default defineComponent({
 
 		return {
 			visible,
+			isOpened,
+			isClosed,
+			isFocus,
 			status,
 			height,
 			width,

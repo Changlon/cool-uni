@@ -32,10 +32,7 @@ export default defineComponent({
 			default: false,
 		},
 		// 打开时的背景色
-		color: {
-			type: String,
-			default: "#6b69f8",
-		},
+		color: String,
 	},
 
 	emits: ["update:modelValue", "change"],

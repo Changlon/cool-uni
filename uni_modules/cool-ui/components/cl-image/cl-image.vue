@@ -156,6 +156,7 @@ export default defineComponent({
 			() => props.src,
 			(val) => {
 				isLoading.value = !!val;
+				isError.value = false;
 			},
 			{
 				immediate: true,

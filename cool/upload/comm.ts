@@ -1,8 +1,14 @@
-import { isArray, has } from "lodash-es";
+import { isArray, has, isObject } from "lodash-es";
 
-function parse(rules: string[], { url, size }: any) {
+type Size = number | number[] | { h?: number; w?: number; m?: string };
+
+function parse(rules: string[], { url, size }: { url: string; size: Size }) {
 	if (!url) {
 		return "";
+	}
+
+	if (url.startsWith("blob:") || url.includes("file://")) {
+		return url;
 	}
 
 	let h = 0;
@@ -11,15 +17,15 @@ function parse(rules: string[], { url, size }: any) {
 	if (isArray(size)) {
 		h = size[0];
 		w = size[1];
-	} else if (has(size, "h")) {
-		h = size.h;
-		w = size.w;
+	} else if (isObject(size) && has(size, "h")) {
+		h = size.h!;
+		w = size.w!;
 
 		if (size.m) {
 			rules.push(`m_${size.m}`);
 		}
 	} else {
-		h = w = size;
+		h = w = Number(size);
 	}
 
 	url += url.includes("?") ? "&" : "?";
@@ -34,8 +40,6 @@ function parse(rules: string[], { url, size }: any) {
 
 	return `${url}${rules.join(",")}`;
 }
-
-type Size = number | number[] | { h?: number; w?: number; m?: string };
 
 function videoPoster(url: string, size: Size) {
 	return parse(["x-oss-process=video/snapshot,t_1000,f_jpg,m_fast"], { url, size });

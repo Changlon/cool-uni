@@ -362,6 +362,7 @@ export default defineComponent({
 		// 刷新
 		function refresh() {
 			if (isEmpty(props.data)) {
+				list.value = [];
 				return false;
 			}
 

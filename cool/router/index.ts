@@ -223,15 +223,21 @@ const router = {
 
 	// 后退
 	back(options?: UniApp.NavigateBackOptions) {
-		uni.navigateBack(options || {});
+		if (this.isFirstPage()) {
+			this.home();
+		} else {
+			uni.navigateBack(options || {});
+		}
 	},
 
 	// 执行当前页面的某个方法
 	callMethod(name: string, data?: any) {
-		const { $vm }: any = this.info();
+		const { $vm } = this.info()!;
 
-		if ($vm[name]) {
-			return $vm[name](data);
+		if ($vm) {
+			if ($vm.$.exposed?.[name]) {
+				return $vm.$.exposed[name](data);
+			}
 		}
 	},
 
