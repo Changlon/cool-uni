@@ -1,4 +1,4 @@
-import { type Module } from "../types";
+import type { Module } from "../types";
 import { hmr } from "../hooks";
 
 // 模块列表

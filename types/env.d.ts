@@ -1,4 +1,4 @@
-/// <reference types="vite/client.d.ts" />
+/// <reference types="vite/client" />
 /// <reference types="@dcloudio/types/uni-app/index.d.ts" />
 /// <reference types="../build/cool/eps.d.ts" />
 /// <reference types="../uni_modules/cool-ui/types/index.d.ts" />
