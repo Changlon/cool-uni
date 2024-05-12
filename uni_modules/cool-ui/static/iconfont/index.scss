@@ -412,3 +412,23 @@
 .cl-icon-home::before {
 	content: "\e8ff";
 }
+
+.cl-icon-order-received::before {
+	content: "\ec7d";
+}
+
+.cl-icon-order-paid::before {
+	content: "\ec7e";
+}
+
+.cl-icon-order-not-shipped::before {
+	content: "\ec7f";
+}
+
+.cl-icon-order-refund::before {
+	content: "\ec80";
+}
+
+.cl-icon-msg::before {
+	content: "\ec81";
+}
