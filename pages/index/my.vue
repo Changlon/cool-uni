@@ -7,133 +7,125 @@
 		<!-- #endif -->
 
 		<view class="page-my">
-			<view class="bg"></view>
+			<view class="header">
+				<view class="icon" @tap="toEdit">
+					<text class="cl-icon-edit"></text>
+				</view>
 
-			<view class="container">
-				<view class="header">
-					<view class="icon" @tap="toEdit">
-						<text class="cl-icon-edit"></text>
-					</view>
+				<view class="icon" @tap="toSet">
+					<text class="cl-icon-set"></text>
+				</view>
 
-					<view class="icon" @tap="toDev">
-						<text class="cl-icon-scan"></text>
-					</view>
+				<view class="icon" @tap="toMsg">
+					<text class="cl-icon-msg"></text>
+				</view>
+			</view>
 
-					<view class="icon" @tap="toSet">
-						<text class="cl-icon-set"></text>
-					</view>
+			<view class="user">
+				<cl-avatar :src="user.info?.avatarUrl" :size="100" />
 
-					<view class="icon" @tap="toMsg">
-						<text class="cl-icon-msg"></text>
+				<view class="det">
+					<cl-text :size="32" block :margin="[0, 0, 8, 0]">{{
+						user.info?.nickName
+					}}</cl-text>
+					<cl-text :size="24" color="info">写签名会更容易获得别人的关注哦～</cl-text>
+				</view>
+			</view>
+
+			<view class="count">
+				<view class="item">
+					<text>171</text>
+					<text>总点击</text>
+				</view>
+
+				<view class="item">
+					<text>24</text>
+					<text>赞</text>
+				</view>
+
+				<view class="item">
+					<text>89</text>
+					<text>关注</text>
+				</view>
+
+				<view class="item">
+					<text>653</text>
+					<text>粉丝</text>
+				</view>
+			</view>
+
+			<view class="switch">
+				<view class="item">
+					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">接单模式</cl-text>
+					<cl-text :size="24" color="info">已关闭</cl-text>
+
+					<view class="switch">
+						<cl-switch />
 					</view>
 				</view>
 
-				<view class="user">
-					<cl-avatar :src="user.info?.avatarUrl" :size="100" />
+				<view class="item">
+					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">消息通知</cl-text>
+					<cl-text :size="24" color="info">已开启</cl-text>
 
-					<view class="det">
-						<cl-text :size="32" block :margin="[0, 0, 8, 0]">{{
-							user.info?.nickName
-						}}</cl-text>
-						<cl-text :size="24" color="info">写签名会更容易获得别人的关注哦～</cl-text>
+					<view class="switch">
+						<cl-switch />
 					</view>
 				</view>
+			</view>
 
-				<view class="count">
-					<view class="item">
-						<text>171</text>
-						<text>总点击</text>
-					</view>
+			<view class="status">
+				<cl-text block :size="30" bold>我的订单</cl-text>
 
-					<view class="item">
-						<text>24</text>
-						<text>赞</text>
-					</view>
-
-					<view class="item">
-						<text>89</text>
-						<text>关注</text>
-					</view>
-
-					<view class="item">
-						<text>653</text>
-						<text>粉丝</text>
+				<view class="list">
+					<view
+						class="item"
+						v-for="(item, index) in order.list"
+						:key="index"
+						@tap="order.toLink(item.value)"
+					>
+						<cl-icon :name="item.icon" :size="50" />
+						<cl-text :margin="[18, 0, 0, 0]" :size="24" color="info">
+							{{ item.label }}
+						</cl-text>
 					</view>
 				</view>
+			</view>
 
-				<view class="switch">
-					<view class="item">
-						<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">接单模式</cl-text>
-						<cl-text :size="24" color="info">已关闭</cl-text>
+			<view class="menu">
+				<cl-list :radius="24" :border="false">
+					<cl-list-item label="我的账单" @tap="toBill">
+						<template #icon>
+							<cl-icon name="bill" :size="40" />
+						</template>
+					</cl-list-item>
 
-						<view class="switch">
-							<cl-switch />
-						</view>
-					</view>
+					<cl-list-item label="观看历史">
+						<template #icon>
+							<cl-icon name="time" :size="40" />
+						</template>
+					</cl-list-item>
 
-					<view class="item">
-						<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">消息通知</cl-text>
-						<cl-text :size="24" color="info">已开启</cl-text>
+					<cl-list-item label="数据看板">
+						<template #icon>
+							<cl-icon name="chart-bar" :size="40" />
+						</template>
+					</cl-list-item>
 
-						<view class="switch">
-							<cl-switch />
-						</view>
-					</view>
-				</view>
+					<cl-list-item label="邀请好友">
+						<template #icon>
+							<cl-icon name="share" :size="40" />
+						</template>
+					</cl-list-item>
+				</cl-list>
 
-				<view class="status">
-					<cl-text block :size="30" bold>我的订单</cl-text>
-
-					<view class="list">
-						<view
-							class="item"
-							v-for="(item, index) in order.list"
-							:key="index"
-							@tap="order.toLink(item.value)"
-						>
-							<cl-icon :name="item.icon" :size="50" />
-							<cl-text :margin="[18, 0, 0, 0]" :size="24" color="info">
-								{{ item.label }}
-							</cl-text>
-						</view>
-					</view>
-				</view>
-
-				<view class="menu">
-					<cl-list :radius="24" :border="false">
-						<cl-list-item label="我的账单" @tap="toBill">
-							<template #icon>
-								<cl-icon name="bill" :size="40" />
-							</template>
-						</cl-list-item>
-
-						<cl-list-item label="观看历史">
-							<template #icon>
-								<cl-icon name="time" :size="40" />
-							</template>
-						</cl-list-item>
-
-						<cl-list-item label="数据看板">
-							<template #icon>
-								<cl-icon name="chart-bar" :size="40" />
-							</template>
-						</cl-list-item>
-
-						<cl-list-item label="邀请好友">
-							<template #icon>
-								<cl-icon name="share" :size="40" />
-							</template>
-						</cl-list-item>
-					</cl-list>
-
-					<cl-list :radius="24" :border="false">
-						<cl-list-item label="设置" @tap="toSet">
-							<template #icon>
-								<cl-icon name="set" :size="40" />
-							</template>
-						</cl-list-item>
-					</cl-list>
-				</view>
+				<cl-list :radius="24" :border="false">
+					<cl-list-item label="设置" @tap="toSet">
+						<template #icon>
+							<cl-icon name="set" :size="40" />
+						</template>
+					</cl-list-item>
+				</cl-list>
 			</view>
 		</view>
 
@@ -228,26 +220,6 @@ $gap: 24rpx;
 
 .page-my {
 	padding: $gap;
-	position: relative;
-	overflow: hidden;
-
-	.bg {
-		height: 850rpx;
-		width: 200%;
-		position: absolute;
-		left: -50%;
-		top: -200rpx;
-		background: radial-gradient(
-			circle at center top,
-			rgba($cl-color-primary, 0.1),
-			#f6f7fa 50%
-		);
-		transform: rotate(50deg);
-	}
-
-	.container {
-		position: relative;
-	}
 
 	.header {
 		display: flex;
