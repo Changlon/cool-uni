@@ -13,7 +13,7 @@ interface Res {
 	[key: string]: any;
 }
 
-export function usePager<T = any>() {
+export function usePager<T = any>(data: T[] = []) {
 	const { proxy }: any = getCurrentInstance();
 	const ui = useUi();
 
@@ -25,7 +25,7 @@ export function usePager<T = any>() {
 			size: 20,
 			total: 0,
 		},
-		list: [] as T[],
+		list: data,
 		loading: false,
 		finished: false,
 	});
