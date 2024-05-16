@@ -19,7 +19,7 @@
 				transform,
 				transition,
 			}"
-			@touchmove="onTouchMove"
+			@touchmove.stop="onTouchMove"
 			@touchstart="onTouchStart"
 			@touchend="onTouchEnd"
 		>
