@@ -2,7 +2,7 @@
 	<cl-page status-bar-background="transparent">
 		<!-- #ifdef MP -->
 		<cl-sticky>
-			<cl-topbar :border="false" background-color="transparent"></cl-topbar>
+			<cl-topbar :show-back="false" :border="false" background-color="transparent" />
 		</cl-sticky>
 		<!-- #endif -->
 
