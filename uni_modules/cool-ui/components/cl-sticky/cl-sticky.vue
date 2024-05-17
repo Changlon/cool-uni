@@ -1,5 +1,9 @@
 <template>
-	<view class="cl-sticky" :class="[{ 'is-flex': isFlex }]" :style="{ zIndex, top: stickyTop }">
+	<view
+		class="cl-sticky"
+		:class="[{ 'is-flex': isFlex }]"
+		:style="{ zIndex, top: stickyTop, backgroundColor }"
+	>
 		<slot></slot>
 	</view>
 </template>
@@ -27,6 +31,7 @@ export default defineComponent({
 			default: true,
 		},
 		isFlex: Boolean,
+		backgroundColor: String,
 	},
 
 	setup(props) {

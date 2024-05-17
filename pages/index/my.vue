@@ -1,37 +1,130 @@
 <template>
-	<cl-page>
+	<cl-page status-bar-background="transparent">
+		<!-- #ifdef MP -->
+		<cl-sticky>
+			<cl-topbar :border="false" background-color="transparent"></cl-topbar>
+		</cl-sticky>
+		<!-- #endif -->
+
 		<view class="page-my">
 			<view class="header">
-				<view class="info">
-					<!-- 信息 -->
-					<view class="base">
-						<text class="name" @tap="toSet">{{ user.info?.nickName || "昵称" }}</text>
-						<text class="level">Lv1</text>
-					</view>
+				<view class="icon" @tap="toEdit">
+					<text class="cl-icon-edit"></text>
+				</view>
 
-					<!-- 头像 -->
-					<view class="avatar" @tap="toSet">
-						<cl-avatar :size="110" :src="user.info?.avatarUrl" />
+				<view class="icon" @tap="toSet">
+					<text class="cl-icon-set"></text>
+				</view>
+
+				<view class="icon" @tap="toMsg">
+					<text class="cl-icon-msg"></text>
+				</view>
+			</view>
+
+			<view class="user">
+				<cl-avatar :src="user.info?.avatarUrl" :size="100" />
+
+				<view class="det">
+					<cl-text :size="32" block :margin="[0, 0, 8, 0]">{{
+						user.info?.nickName
+					}}</cl-text>
+					<cl-text :size="24" color="info">写签名会更容易获得别人的关注哦～</cl-text>
+				</view>
+			</view>
+
+			<view class="count">
+				<view class="item">
+					<text>171</text>
+					<text>总点击</text>
+				</view>
+
+				<view class="item">
+					<text>24</text>
+					<text>赞</text>
+				</view>
+
+				<view class="item">
+					<text>89</text>
+					<text>关注</text>
+				</view>
+
+				<view class="item">
+					<text>653</text>
+					<text>粉丝</text>
+				</view>
+			</view>
+
+			<view class="switch">
+				<view class="item">
+					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">接单模式</cl-text>
+					<cl-text :size="24" color="info">已关闭</cl-text>
+
+					<view class="switch">
+						<cl-switch />
 					</view>
 				</view>
 
-				<!-- 简介 -->
-				<view class="desc"> 简介：我也写了一个cool-admin的开源项目 </view>
+				<view class="item">
+					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">消息通知</cl-text>
+					<cl-text :size="24" color="info">已开启</cl-text>
+
+					<view class="switch">
+						<cl-switch />
+					</view>
+				</view>
 			</view>
 
-			<view class="container">
-				<cl-list :radius="16">
-					<cl-list-item label="我的订单" @tap="toDev" />
-					<cl-list-item label="我的二维码" :arrow-icon="false" @tap="toDev">
-						<cl-icon name="qrcode" />
+			<view class="status">
+				<cl-text block :size="30" bold>我的订单</cl-text>
+
+				<view class="list">
+					<view
+						class="item"
+						v-for="(item, index) in order.list"
+						:key="index"
+						@tap="order.toLink(item.value)"
+					>
+						<cl-icon :name="item.icon" :size="50" />
+						<cl-text :margin="[18, 0, 0, 0]" :size="24" color="info">
+							{{ item.label }}
+						</cl-text>
+					</view>
+				</view>
+			</view>
+
+			<view class="menu">
+				<cl-list :radius="24" :border="false">
+					<cl-list-item label="我的账单" @tap="toBill">
+						<template #icon>
+							<cl-icon name="bill" :size="40" />
+						</template>
 					</cl-list-item>
-					<cl-list-item label="我的钱包" :arrow-icon="false">
-						<cl-text type="price" :value="59.05" />
+
+					<cl-list-item label="观看历史">
+						<template #icon>
+							<cl-icon name="time" :size="40" />
+						</template>
+					</cl-list-item>
+
+					<cl-list-item label="数据看板">
+						<template #icon>
+							<cl-icon name="chart-bar" :size="40" />
+						</template>
+					</cl-list-item>
+
+					<cl-list-item label="邀请好友">
+						<template #icon>
+							<cl-icon name="share" :size="40" />
+						</template>
 					</cl-list-item>
 				</cl-list>
 
-				<cl-list :radius="16">
-					<cl-list-item :border="false" label="设置" @tap="toSet" />
+				<cl-list :radius="24" :border="false">
+					<cl-list-item label="设置" @tap="toSet">
+						<template #icon>
+							<cl-icon name="set" :size="40" />
+						</template>
+					</cl-list-item>
 				</cl-list>
 			</view>
 		</view>
@@ -42,9 +135,10 @@
 
 <script lang="ts" setup>
 import { onPullDownRefresh, onShow } from "@dcloudio/uni-app";
-import { useCool, useStore } from "/@/cool";
+import { useCool, useStore, module } from "/@/cool";
 import Tabbar from "./components/tabbar.vue";
 import { useUi } from "/$/cool-ui";
+import { reactive } from "vue";
 
 const { router } = useCool();
 const { user } = useStore();
@@ -58,12 +152,57 @@ async function refresh() {
 	}
 }
 
+const order = reactive({
+	list: [
+		{
+			icon: "order-paid",
+			label: "待支付",
+			value: 1,
+		},
+		{
+			icon: "order-not-shipped",
+			label: "未发货",
+			value: 2,
+		},
+		{
+			icon: "order-received",
+			label: "已发货",
+			value: 3,
+		},
+		{
+			icon: "order-refund",
+			label: "售后 / 退款",
+			value: 4,
+		},
+	],
+
+	toLink(value: number) {
+		ui.showToast("订单模块不存在，请在插件市场中下载");
+	},
+});
+
 function toDev() {
 	ui.showToast("开发中");
 }
 
+function toBill() {
+	ui.showToast("财务模块不存在，请在插件市场中下载");
+}
+
 function toSet() {
 	router.push("/pages/user/set");
+}
+
+function toEdit() {
+	router.push("/pages/user/edit");
+}
+
+function toMsg() {
+	if (module.get("cool-msg")) {
+		router.push("/uni_modules/cool-msg/pages/list");
+	} else {
+		ui.showToast("消息模块不存在，请在插件市场中下载");
+	}
 }
 
 onPullDownRefresh(async () => {
@@ -77,51 +216,121 @@ onShow(() => {
 </script>
 
 <style lang="scss" scoped>
+$gap: 24rpx;
+
 .page-my {
+	padding: $gap;
+
 	.header {
-		padding: 30rpx 30rpx 40rpx 30rpx;
-		background-color: #fff;
+		display: flex;
 
-		.info {
+		.icon {
 			display: flex;
-			position: relative;
+			justify-content: center;
+			align-items: center;
+			height: 60rpx;
+			width: 60rpx;
+			background-color: rgba(150, 150, 150, 0.1);
+			border-radius: 16rpx;
+			font-size: 32rpx;
+			margin-right: $gap;
 
-			.name {
-				display: block;
-				font-size: 50rpx;
-				font-weight: bold;
+			&:last-child {
+				margin-left: auto;
+				margin-right: 0;
 			}
-
-			.level {
-				display: inline-block;
-				font-size: 24rpx;
-				border: 2rpx solid currentColor;
-				border-radius: 8rpx;
-				padding: 0 6rpx;
-				margin: 10rpx 0 0 0;
-				color: $cl-color-primary;
-			}
-
-			.avatar {
-				border: 6rpx solid #f6f7fa;
-				border-radius: 100%;
-				position: absolute;
-				top: 0;
-				right: 0;
-				height: 110rpx;
-				width: 110rpx;
-			}
-		}
-
-		.desc {
-			color: #999;
-			font-size: 24rpx;
-			margin-top: 20rpx;
 		}
 	}
 
-	.container {
-		padding: 20rpx 24rpx;
+	.user {
+		display: flex;
+		align-items: center;
+		padding: 48rpx 12rpx;
+
+		.det {
+			flex: 1;
+			margin-left: 32rpx;
+		}
+	}
+
+	.count {
+		display: flex;
+		margin-bottom: 32rpx;
+
+		.item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			flex: 1;
+
+			text {
+				&:nth-child(1) {
+					font-size: 40rpx;
+					margin-bottom: 4rpx;
+					font-weight: bold;
+				}
+
+				&:nth-child(2) {
+					font-size: 24rpx;
+					color: $cl-color-info;
+				}
+			}
+		}
+	}
+
+	.switch {
+		display: flex;
+		margin-bottom: 24rpx;
+
+		.item {
+			flex: 1;
+			border-radius: 24rpx;
+			padding: 32rpx;
+			background-color: #fff;
+			position: relative;
+
+			.switch {
+				position: absolute;
+				right: 24rpx;
+				top: calc(50% - 30rpx);
+				transform: scale(0.8);
+			}
+
+			&:nth-child(1) {
+				margin-right: 12rpx;
+			}
+
+			&:nth-child(2) {
+				margin-left: 12rpx;
+			}
+		}
+	}
+
+	.status {
+		background-color: #fff;
+		border-radius: 24rpx;
+		padding: 32rpx;
+		margin-bottom: 24rpx;
+
+		.list {
+			display: flex;
+
+			.item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				flex: 1;
+				padding: 48rpx 0 24rpx 0;
+			}
+		}
+	}
+
+	.menu {
+		:deep(.cl-list-item) {
+			padding: 4rpx 6rpx 4rpx 12rpx;
+		}
 	}
 }
 </style>

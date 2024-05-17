@@ -23,7 +23,7 @@
 		</view>
 
 		<template v-else>
-			<view class="cl-image__loading" v-if="isLoading">
+			<view class="cl-image__loading" v-if="isLoading && showLoading">
 				<cl-loading />
 			</view>
 
@@ -79,6 +79,10 @@ export default defineComponent({
 		},
 		webp: Boolean,
 		showMenuByLongpress: Boolean,
+		showLoading: {
+			type: Boolean,
+			default: true,
+		},
 	},
 
 	setup(props, { emit }) {

@@ -3,7 +3,7 @@
 		<view class="page-home">
 			<view class="logo">
 				<text class="name">{{ app.info.name }}</text>
-				<text class="version">v7.1.0</text>
+				<text class="version">v7.3.0</text>
 			</view>
 
 			<view class="group" v-for="(item, index) in list" :key="index">
@@ -18,7 +18,7 @@
 					>
 						<text class="label">{{ item2.label }}</text>
 
-						<cl-icon name="arrow-right"></cl-icon>
+						<cl-icon name="arrow-right" color="info"></cl-icon>
 					</view>
 				</view>
 			</view>
