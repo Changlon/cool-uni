@@ -10,6 +10,7 @@ const useDictStore = defineStore("dict", () => {
 	// 对象数据
 	const data = reactive<Dict.Data>({});
 
+	// 获取数据列表
 	function get(name: string) {
 		return computed(() => data[name]).value || [];
 	}
