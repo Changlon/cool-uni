@@ -1,5 +1,12 @@
 <template>
-	<cl-footer :flex="false" border :z-index="399" :padding="0">
+	<cl-footer
+		:flex="false"
+		border
+		:z-index="399"
+		:padding="0"
+		background-color="#fff7"
+		backdrop-filter="blur(20rpx)"
+	>
 		<view class="tabbar">
 			<view
 				class="item"

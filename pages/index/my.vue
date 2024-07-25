@@ -21,12 +21,12 @@
 				</view>
 			</view>
 
-			<view class="user">
+			<view class="user" @tap="toEdit">
 				<cl-avatar :src="user.info?.avatarUrl" :size="100" />
 
 				<view class="det">
 					<cl-text :size="32" block :margin="[0, 0, 8, 0]">{{
-						user.info?.nickName
+						user.info?.nickName || "未登录"
 					}}</cl-text>
 					<cl-text :size="24" color="info">写签名会更容易获得别人的关注哦～</cl-text>
 				</view>
@@ -148,7 +148,7 @@ async function refresh() {
 	if (user.token) {
 		await user.get();
 	} else {
-		user.logout();
+		// user.logout();
 	}
 }
 
