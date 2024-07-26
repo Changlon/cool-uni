@@ -161,3 +161,8 @@ export function sleep(duration: number) {
 		}, duration);
 	});
 }
+
+// 是否为空
+export function isEmpty(val: any) {
+	return val === "" || val === null || val === undefined;
+}

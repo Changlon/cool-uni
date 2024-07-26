@@ -64,8 +64,6 @@ function toLink(pagePath: string) {
 		router.push("/" + pagePath);
 	}
 }
-
-uni.hideTabBar();
 </script>
 
 <style lang="scss" scoped>
