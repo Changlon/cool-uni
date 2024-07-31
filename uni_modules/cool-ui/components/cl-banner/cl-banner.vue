@@ -32,6 +32,9 @@
 			<swiper-item v-for="(item, index) in list" :key="index">
 				<view
 					class="cl-banner-item"
+					:style="{
+						transform,
+					}"
 					:class="[
 						{
 							'is-active': current === index,
@@ -101,6 +104,10 @@ export default defineComponent({
 		margin: {
 			type: Array,
 			default: () => [],
+		},
+		transform: {
+			type: String,
+			default: "scale(0.95, 0.9)",
 		},
 		indicatorDots: Boolean,
 		indicatorColor: {
@@ -204,6 +211,10 @@ export default defineComponent({
 
 		// 是否采用衔接滑动
 		const circular = computed(() => {
+			if (props.circular !== undefined) {
+				return props.circular;
+			}
+
 			switch (props.type) {
 				case "card":
 					return true;
