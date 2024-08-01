@@ -36,8 +36,8 @@
 						>
 							<template #default="{ disabled, btnText }">
 								<cl-button
-									fill
 									type="primary"
+									fill
 									:height="90"
 									:font-size="30"
 									:disabled="disabled"
@@ -89,19 +89,66 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 用户信息完善 -->
+		<cl-popup
+			v-model="edit.visible"
+			direction="bottom"
+			:border-radius="[32, 32, 0, 0]"
+			show-close-btn
+			@close="edit.onClose"
+		>
+			<div class="edit-popup">
+				<cl-text block bold :size="32">获取你的头像、昵称</cl-text>
+				<cl-text block :margin="[24, 0, 50, 0]" color="info">
+					用于向用户提供有辨识度的界面
+				</cl-text>
+
+				<cl-list :margin="[0, -12, 60, -12]" :border="false">
+					<cl-list-item label="头像" :arrow-icon="false">
+						<button
+							class="avatar"
+							open-type="chooseAvatar"
+							@chooseavatar="edit.uploadAvatar"
+						>
+							<cl-avatar
+								round
+								:size="80"
+								:src="edit.form.avatarUrl"
+								:margin="[0, 1, 0, 0]"
+							/>
+						</button>
+					</cl-list-item>
+
+					<cl-list-item label="昵称" :arrow-icon="false">
+						<input
+							class="name"
+							v-model="edit.form.nickName"
+							type="nickname"
+							placeholder="请填写昵称、限16个字符或汉字"
+							maxlength="16"
+						/>
+					</cl-list-item>
+				</cl-list>
+
+				<cl-button fill type="primary" :height="90" :font-size="30" @tap="edit.save">
+					保存
+				</cl-button>
+			</div>
+		</cl-popup>
 	</cl-page>
 </template>
 
 <script lang="ts" setup>
+import { ctx } from "virtual:ctx";
 import { computed, reactive, ref } from "vue";
 import { onReady } from "@dcloudio/uni-app";
 import { useApp, useCool, useStore, useWx } from "/@/cool";
 import { useUi } from "/$/cool-ui";
+import { config } from "/@/config";
+import { cloneDeep, isEmpty } from "lodash-es";
 import SmsBtn from "/@/components/sms-btn.vue";
 import AgreeBtn from "/@/components/agree-btn.vue";
-import { config } from "/@/config";
-import { ctx } from "virtual:ctx";
-import { cloneDeep, isEmpty } from "lodash-es";
 
 interface Platform {
 	label: string;
@@ -111,7 +158,9 @@ interface Platform {
 	onClick?: () => void;
 }
 
-const { service, router, refs, setRefs, storage } = useCool();
+type LoginType = "mini" | "mp" | "uniPhone" | "";
+
+const { service, router, refs, setRefs, storage, upload } = useCool();
 const { user } = useStore();
 const app = useApp();
 const ui = useUi();
@@ -122,6 +171,9 @@ const loading = ref(false);
 
 // 手机号
 const phone = ref(storage.get("phone") || "");
+
+// 登录类型
+const type = ref<LoginType>("");
 
 // 登录方式
 const mode = ref();
@@ -168,7 +220,7 @@ const platformsEnv = computed(() => {
 	return arr.filter((e) => e.value != mode.value);
 });
 
-// 切换模式
+// 切换方式
 function changeMode(item: Platform) {
 	if (item.onClick) {
 		item.onClick();
@@ -178,8 +230,10 @@ function changeMode(item: Platform) {
 }
 
 // 登录请求
-async function nextLogin(key: "mini" | "mp" | "uniPhone", data: any) {
-	return service.user.login[key](data)
+async function reqLogin(key: LoginType, data: any) {
+	type.value = key;
+
+	service.user.login[key](data)
 		.then(async (res) => {
 			// 设置token
 			user.setToken(res);
@@ -187,12 +241,18 @@ async function nextLogin(key: "mini" | "mp" | "uniPhone", data: any) {
 			// 获取用户信息
 			await user.get();
 
-			// 登录跳转
-			router.nextLogin(key);
+			// 检测是否需要编辑
+			edit.check();
 		})
 		.catch((err) => {
 			ui.showTips(err.message);
+			wx.getCode();
 		});
+}
+
+// 登录跳转
+function nextLogin() {
+	router.nextLogin(type.value);
 }
 
 // 短信登录
@@ -242,7 +302,7 @@ function wxLogin() {
 		await wx
 			.miniLogin()
 			.then(async (res) => {
-				await nextLogin("mini", res);
+				await reqLogin("mini", res);
 			})
 			.catch((err) => {
 				ui.showToast(err.message);
@@ -263,7 +323,7 @@ function mpLogin() {
 	wx.mpLogin().then(async (code) => {
 		if (code) {
 			ui.showLoading();
-			await nextLogin("mp", { code });
+			await reqLogin("mp", { code });
 			ui.hideLoading();
 		}
 	});
@@ -333,7 +393,7 @@ const univerify = reactive({
 				},
 			},
 			async success(res: { authResult: any }) {
-				await nextLogin("uniPhone", {
+				await reqLogin("uniPhone", {
 					appId: ctx.appid,
 					...res.authResult,
 				});
@@ -351,6 +411,60 @@ const univerify = reactive({
 
 // 手机号一键登录环境检测
 univerify.check();
+
+// 信息完善
+// - 微信小程序登录后
+const edit = reactive({
+	visible: false,
+
+	form: {
+		avatarUrl: "",
+		nickName: "",
+	},
+
+	check() {
+		if (type.value == "mini" && user.info?.nickName == "微信用户") {
+			edit.open();
+		} else {
+			nextLogin();
+		}
+	},
+
+	open() {
+		edit.visible = true;
+	},
+
+	close() {
+		edit.visible = false;
+	},
+
+	onClose() {
+		nextLogin();
+	},
+
+	uploadAvatar(e: { detail: { avatarUrl: string } }) {
+		upload({ path: e.detail.avatarUrl })
+			.then((url) => {
+				edit.form.avatarUrl = url;
+			})
+			.catch((err) => {
+				ui.showToast(err.message);
+			});
+	},
+
+	save() {
+		if (!edit.form.avatarUrl) {
+			return ui.showToast("请上传头像");
+		}
+
+		if (!edit.form.nickName) {
+			return ui.showToast("请输入昵称");
+		}
+
+		user.update(edit.form);
+		edit.close();
+	},
+});
 
 onReady(() => {
 	// 公众号登录授权回调
@@ -468,6 +582,26 @@ onReady(() => {
 				}
 			}
 		}
+	}
+}
+
+.edit-popup {
+	padding: 12rpx 0;
+
+	.avatar {
+		background-color: #fff;
+		padding: 0;
+		margin: 0;
+
+		&::after {
+			border: 0;
+		}
+	}
+
+	.name {
+		font-size: 28rpx;
+		text-align: right;
+		width: 100%;
 	}
 }
 </style>
