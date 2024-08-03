@@ -74,10 +74,8 @@
 			<view class="cl-select-popup__footer" v-if="showFooter">
 				<slot name="confirm">
 					<cl-button
-						round
-						fill
+						custom
 						type="primary"
-						size="large"
 						:disabled="required ? selection.length == 0 : false"
 						@tap="confirm"
 					>

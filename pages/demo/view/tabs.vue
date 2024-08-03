@@ -1,15 +1,7 @@
 <template>
 	<cl-page :padding="20">
 		<cl-card label="基础用法">
-			<cl-tabs v-model="active" :list="list"></cl-tabs>
-		</cl-card>
-
-		<cl-card label="居中">
-			<cl-tabs v-model="active" :list="list2" justify="center"></cl-tabs>
-		</cl-card>
-
-		<cl-card label="填充">
-			<cl-tabs v-model="active" :list="list2" fill></cl-tabs>
+			<cl-tabs v-model="active" :list="list" />
 		</cl-card>
 
 		<cl-card label="下拉框">
@@ -22,17 +14,30 @@
 			>
 				<template #dropdown>
 					<view class="dropdown">
-						<cl-text
+						<cl-tag
 							v-for="item in list"
-							:value="item.label"
 							:key="item.value"
-							:margin="20"
-							:color="active === item.value ? 'primary' : ''"
+							:margin="10"
+							:type="active === item.value ? 'primary' : 'info'"
 							@tap="check(item.value)"
-						/>
+						>
+							{{ item.label }}
+						</cl-tag>
 					</view>
 				</template>
 			</cl-tabs>
+		</cl-card>
+
+		<cl-card label="居中">
+			<cl-tabs v-model="active2" :list="list2" justify="center" />
+		</cl-card>
+
+		<cl-card label="填充">
+			<cl-tabs v-model="active2" :list="list2" fill />
+		</cl-card>
+
+		<cl-card label="块状">
+			<cl-tabs v-model="active2" :list="list2" :show-line="false" :show-silder="true" />
 		</cl-card>
 
 		<cl-card label="自定义">
@@ -43,7 +48,7 @@
 				color="red"
 				background-color="f6f7fa"
 				:show-line="false"
-			></cl-tabs>
+			/>
 		</cl-card>
 	</cl-page>
 </template>
@@ -91,6 +96,8 @@ const list = ref([
 	},
 ]);
 
+const active2 = ref(2);
+
 const list2 = ref([
 	{
 		label: "盒装",
@@ -119,7 +126,7 @@ function check(value: any) {
 <style lang="scss" scoped>
 .dropdown {
 	background-color: #fff;
-	padding: 20rpx;
+	padding: 10rpx;
 	border: $cl-border-width solid $cl-border-color;
 	border-radius: 12rpx;
 }

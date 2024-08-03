@@ -18,7 +18,7 @@
 
 		<view class="cl-image__error" v-else-if="isError">
 			<slot name="error">
-				<text class="icon cl-icon-image-error"></text>
+				<text class="icon cl-icon-toast-warning"></text>
 			</slot>
 		</view>
 

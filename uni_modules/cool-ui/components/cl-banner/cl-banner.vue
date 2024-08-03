@@ -33,7 +33,7 @@
 				<view
 					class="cl-banner-item"
 					:style="{
-						transform,
+						transform: type == 'card' ? transform : null,
 					}"
 					:class="[
 						{
@@ -98,7 +98,6 @@ export default defineComponent({
 		// 圆角
 		radius: {
 			type: [String, Number],
-			default: 10,
 		},
 		// 间距
 		margin: {
@@ -107,7 +106,7 @@ export default defineComponent({
 		},
 		transform: {
 			type: String,
-			default: "scale(0.95, 0.9)",
+			default: "scale(0.9, 0.85)",
 		},
 		indicatorDots: Boolean,
 		indicatorColor: {
@@ -135,7 +134,10 @@ export default defineComponent({
 			type: Number,
 			default: 500,
 		},
-		circular: Boolean,
+		circular: {
+			type: Boolean,
+			default: null,
+		},
 		vertical: Boolean,
 		acceleration: Boolean,
 		disableProgrammaticAnimation: Boolean,
@@ -211,7 +213,7 @@ export default defineComponent({
 
 		// 是否采用衔接滑动
 		const circular = computed(() => {
-			if (props.circular !== undefined) {
+			if (props.circular !== null) {
 				return props.circular;
 			}
 

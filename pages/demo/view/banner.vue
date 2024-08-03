@@ -27,6 +27,9 @@ const urls = ref([
 	{
 		url: "/pages/demo/static/bg3.png",
 	},
+	{
+		url: "/pages/demo/static/bg4.png",
+	},
 ]);
 
 function onSelect(i: number) {

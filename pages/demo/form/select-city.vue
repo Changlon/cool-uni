@@ -11,10 +11,15 @@
 		<cl-card label="自定义">
 			<cl-select-city v-model="v3">
 				<template #default="{ selection }">
-					<cl-row :margin="[0, 0, 20, 0]" v-if="selection.length">
-						<cl-tag v-for="item in selection" plain round :key="item.code">{{
-							item.name
-						}}</cl-tag>
+					<cl-row>
+						<cl-tag
+							:margin="[0, 20, 20, 0]"
+							v-for="item in selection"
+							plain
+							round
+							:key="item.code"
+							>{{ item.name }}</cl-tag
+						>
 					</cl-row>
 
 					<cl-button round>选择所在地区</cl-button>

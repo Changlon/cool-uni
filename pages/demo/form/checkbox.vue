@@ -50,6 +50,13 @@
 			</cl-checkbox-group>
 		</cl-card>
 
+		<cl-card label="带背景">
+			<cl-checkbox-group v-model="v6" text border bg>
+				<cl-checkbox label="1">炸鸡</cl-checkbox>
+				<cl-checkbox label="2">汉堡</cl-checkbox>
+			</cl-checkbox-group>
+		</cl-card>
+
 		<cl-card label="边框圆角">
 			<cl-checkbox-group v-model="v7" round border>
 				<cl-checkbox label="1">炸鸡</cl-checkbox>

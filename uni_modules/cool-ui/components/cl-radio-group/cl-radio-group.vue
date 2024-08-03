@@ -22,6 +22,8 @@ export default defineComponent({
 		disabled: Boolean,
 		// 是否边框样式
 		border: Boolean,
+		// 是否带背景色
+		bg: Boolean,
 		// 是否宽度填充
 		fill: Boolean,
 		// 是否只显示文字

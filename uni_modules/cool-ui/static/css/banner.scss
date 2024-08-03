@@ -23,7 +23,7 @@
 		&__image {
 			height: 100%;
 			width: 100%;
-			border-radius: 12rpx;
+			border-radius: $cl-banner-radius;
 		}
 
 		&__video {
@@ -38,7 +38,7 @@
 			transition: all 0.2s ease-in 0s;
 
 			&.is-active {
-				transform: none;
+				transform: none !important;
 				transition: all 0.2s ease-in 0s;
 			}
 		}

@@ -11,10 +11,10 @@
 			},
 		]"
 		:style="{
-			backgroundColor: backgroundColor,
+			backgroundColor,
 		}"
 	>
-		<view class="cl-tabs__header">
+		<view class="cl-tabs__inner">
 			<scroll-view
 				class="cl-tabs__bar"
 				scroll-with-animation
@@ -35,7 +35,7 @@
 						v-for="(item, index) in tabs"
 						:key="index"
 						:style="{
-							color: current === item.value ? color : unColor,
+							color: getColor(item),
 							padding: `0 ${gutter}rpx`,
 						}"
 						:class="{
@@ -62,14 +62,26 @@
 					</view>
 
 					<!-- 选中样式 -->
-					<view
-						class="cl-tabs__line"
-						v-if="lineLeft > 0 && showLine"
-						:style="{
-							'background-color': color,
-							left: lineLeft + 'px',
-						}"
-					></view>
+					<template v-if="lineLeft > 0">
+						<view
+							class="cl-tabs__line"
+							:style="{
+								'background-color': color,
+								left: lineLeft + 'px',
+							}"
+							v-if="showLine"
+						></view>
+
+						<view
+							class="cl-tabs__silder"
+							:style="{
+								'background-color': color,
+								left: silder.left + 'px',
+								width: silder.width + 'px',
+							}"
+							v-if="showSilder"
+						></view>
+					</template>
 				</view>
 			</scroll-view>
 
@@ -82,7 +94,7 @@
 			<view
 				class="cl-tabs__dropdown-box"
 				:style="{
-					maxHeight: dropdown.visible ? dropdown.height : '0',
+					opacity: dropdown.visible ? '1' : '0',
 				}"
 			>
 				<slot name="dropdown"></slot>
@@ -105,6 +117,12 @@ import {
 } from "vue";
 import { parseRpx } from "/@/cool/utils";
 
+interface Item {
+	label: string;
+	value: any;
+	[key: string]: any;
+}
+
 export default defineComponent({
 	name: "cl-tabs",
 
@@ -118,7 +136,7 @@ export default defineComponent({
 		},
 		// 标签列表
 		list: {
-			type: Array as PropType<{ label: string; value: any; [key: string]: any }[]>,
+			type: Array as PropType<Item[]>,
 			default: [],
 		},
 		// 是否循环显示
@@ -165,6 +183,11 @@ export default defineComponent({
 			type: Boolean,
 			default: true,
 		},
+		// 显示滑块
+		showSilder: {
+			type: Boolean,
+			default: false,
+		},
 		// 是否可选
 		checkable: Boolean,
 		// 是否禁用
@@ -181,6 +204,12 @@ export default defineComponent({
 
 		// 下划线左位移
 		const lineLeft = ref(0);
+
+		// 滑块
+		const silder = reactive({
+			width: 0,
+			left: 0,
+		});
 
 		// 左滚动距离
 		const scrollLeft = ref(0);
@@ -215,33 +244,11 @@ export default defineComponent({
 		// 下拉
 		const dropdown = reactive({
 			visible: false,
-			height: "200rpx",
-			timer: null as any,
 		});
 
 		// 打开下拉框
 		function openDropdown() {
 			dropdown.visible = !dropdown.visible;
-
-			// 清除计时器
-			clearTimeout(dropdown.timer);
-
-			if (dropdown.visible) {
-				const fn = () => {
-					uni.createSelectorQuery()
-						// #ifndef MP-ALIPAY
-						.in(proxy)
-						// #endif
-						.select(".cl-tabs__dropdown-box")
-						.boundingClientRect((res) => {
-							dropdown.height = res.height + "px";
-						})
-						.exec();
-				};
-
-				// 获取下拉区域高度
-				dropdown.timer = setTimeout(fn, 300);
-			}
 		}
 
 		// 关闭下拉框
@@ -271,6 +278,23 @@ export default defineComponent({
 		// 获取下标
 		function getIndex() {
 			return tabs.value.findIndex((e) => e.value == current.value);
+		}
+
+		// 获取颜色
+		function getColor(item: Item) {
+			console.log(props.color);
+
+			if (current.value === item.value) {
+				if (props.color) {
+					return props.color;
+				}
+
+				if (props.showSilder) {
+					return "#fff";
+				}
+			} else {
+				return props.unColor;
+			}
 		}
 
 		// 上一个
@@ -325,6 +349,9 @@ export default defineComponent({
 						scrollLeft.value = x;
 						lineLeft.value =
 							item.left + item.width / 2 - uni.upx2px(16) - offsetLeft.value;
+
+						silder.left = item.left - offsetLeft.value;
+						silder.width = item.width;
 					}
 				});
 			}
@@ -353,8 +380,10 @@ export default defineComponent({
 			current,
 			scrollLeft,
 			lineLeft,
+			silder,
 			tabs,
 			dropdown,
+			getColor,
 			change,
 			prev,
 			next,

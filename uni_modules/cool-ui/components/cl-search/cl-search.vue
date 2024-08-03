@@ -41,7 +41,7 @@
 					@keyboardheightchange="onKeyboardheightchange"
 				>
 					<template #prepend>
-						<text class="cl-icon-search"></text>
+						<cl-icon color="info" name="search"></cl-icon>
 					</template>
 				</cl-input>
 			</view>

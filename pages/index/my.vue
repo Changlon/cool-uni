@@ -59,7 +59,7 @@
 					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">接单模式</cl-text>
 					<cl-text :size="24" color="info">已关闭</cl-text>
 
-					<view class="switch">
+					<view class="inner">
 						<cl-switch />
 					</view>
 				</view>
@@ -68,7 +68,7 @@
 					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">消息通知</cl-text>
 					<cl-text :size="24" color="info">已开启</cl-text>
 
-					<view class="switch">
+					<view class="inner">
 						<cl-switch />
 					</view>
 				</view>
@@ -290,7 +290,7 @@ $gap: 24rpx;
 			background-color: #fff;
 			position: relative;
 
-			.switch {
+			.inner {
 				position: absolute;
 				right: 24rpx;
 				top: calc(50% - 30rpx);
