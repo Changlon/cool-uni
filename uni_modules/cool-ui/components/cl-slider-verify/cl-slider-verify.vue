@@ -152,7 +152,7 @@ export default defineComponent({
 			}
 
 			if (props.type == "rotate") {
-				target.x = Math.ceil(Math.random() * 200) + 100;
+				target.x = Math.ceil(Math.random() * 180) + 150;
 			}
 		}
 
