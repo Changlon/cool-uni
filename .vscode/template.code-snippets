@@ -22,9 +22,9 @@
 			"    ",
 			"}",
 			"</style>",
-			""
+			"",
 		],
-		"description": "page snippets"
+		"description": "page snippets",
 	},
 	"component": {
 		"prefix": "component",
@@ -43,13 +43,13 @@
 			"</script>",
 			"",
 			"<style lang=\"scss\" scoped>",
-			".component {",
+			".component$2 {",
 			"    ",
 			"}",
 			"</style>",
-			""
+			"",
 		],
-		"description": "component snippets"
+		"description": "component snippets",
 	},
 	"popup": {
 		"prefix": "popup",
@@ -90,8 +90,30 @@
 			".component {",
 			"}",
 			"</style>",
-			""
+			"",
 		],
-		"description": "popup snippets"
-	}
+		"description": "popup snippets",
+	},
+	"pager": {
+		"prefix": "pager",
+		"scope": "typescript",
+		"body": [
+			"const { service } = useCool();",
+			"const { onRefresh, list } = usePager();",
+			"",
+			"function refresh(params?: any) {",
+			"    const { data, next } = onRefresh(params);",
+			"    next(service.$1.page(data));",
+			"}",
+			"",
+			"onReady(() => {",
+			"    refresh();",
+			"});",
+			"",
+			"defineExpose({",
+			"    refresh,",
+			"});",
+		],
+		"description": "pager snippets",
+	},
 }

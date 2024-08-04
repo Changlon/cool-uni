@@ -73,13 +73,13 @@
 						></view>
 
 						<view
-							class="cl-tabs__silder"
+							class="cl-tabs__slider"
 							:style="{
 								'background-color': color,
-								left: silder.left + 'px',
-								width: silder.width + 'px',
+								left: slider.left + 'px',
+								width: slider.width + 'px',
 							}"
-							v-if="showSilder"
+							v-if="showslider"
 						></view>
 					</template>
 				</view>
@@ -184,7 +184,7 @@ export default defineComponent({
 			default: true,
 		},
 		// 显示滑块
-		showSilder: {
+		showslider: {
 			type: Boolean,
 			default: false,
 		},
@@ -206,7 +206,7 @@ export default defineComponent({
 		const lineLeft = ref(0);
 
 		// 滑块
-		const silder = reactive({
+		const slider = reactive({
 			width: 0,
 			left: 0,
 		});
@@ -282,14 +282,12 @@ export default defineComponent({
 
 		// 获取颜色
 		function getColor(item: Item) {
-			console.log(props.color);
-
 			if (current.value === item.value) {
 				if (props.color) {
 					return props.color;
 				}
 
-				if (props.showSilder) {
+				if (props.showslider) {
 					return "#fff";
 				}
 			} else {
@@ -350,8 +348,8 @@ export default defineComponent({
 						lineLeft.value =
 							item.left + item.width / 2 - uni.upx2px(16) - offsetLeft.value;
 
-						silder.left = item.left - offsetLeft.value;
-						silder.width = item.width;
+						slider.left = item.left - offsetLeft.value;
+						slider.width = item.width;
 					}
 				});
 			}
@@ -380,7 +378,7 @@ export default defineComponent({
 			current,
 			scrollLeft,
 			lineLeft,
-			silder,
+			slider,
 			tabs,
 			dropdown,
 			getColor,

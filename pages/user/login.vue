@@ -36,8 +36,8 @@
 						>
 							<template #default="{ disabled, btnText }">
 								<cl-button
+									custom
 									type="primary"
-									fill
 									:height="90"
 									:font-size="30"
 									:disabled="disabled"
@@ -52,8 +52,8 @@
 					<!-- 微信登录 -->
 					<template v-else-if="mode == 'wx'">
 						<cl-button
+							custom
 							type="primary"
-							fill
 							:height="90"
 							:font-size="30"
 							:loading="loading"
@@ -522,7 +522,7 @@ onReady(() => {
 					display: flex;
 					align-items: center;
 					background-color: #eeeeee;
-					border-radius: 10rpx;
+					border-radius: $cl-border-radius;
 					height: 90rpx;
 					margin-bottom: 30rpx;
 					font-size: 30rpx;

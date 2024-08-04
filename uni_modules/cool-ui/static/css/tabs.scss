@@ -84,14 +84,14 @@
 		background-color: $cl-color-primary;
 	}
 
-	&__silder {
+	&__slider {
 		height: 100%;
 		width: 100%;
 		position: absolute;
 		top: 0;
 		transition: all 0.3s;
 		background-color: $cl-color-primary;
-		border-radius: $cl-tabs-silder-radius;
+		border-radius: $cl-tabs-slider-radius;
 	}
 
 	&.is-content {

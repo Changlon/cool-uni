@@ -1,24 +1,39 @@
 <template>
-	<cl-page status-bar-background="transparent">
+	<cl-page background-color="#fff">
 		<view class="page-home">
+			<cl-sticky>
+				<cl-topbar :border="false" :show-back="false">
+					<text
+						class="title"
+						:class="{
+							show: scrollTop > 40,
+						}"
+					>
+						{{ app.info.name }} 快速开发脚手架
+					</text>
+				</cl-topbar>
+			</cl-sticky>
+
 			<view class="logo">
 				<text class="name">{{ app.info.name }}</text>
 				<text class="version">v7.3.0</text>
 			</view>
 
-			<view class="group" v-for="(item, index) in list" :key="index">
-				<text class="title">{{ item.label }}</text>
+			<view class="container">
+				<view class="group" v-for="(item, index) in list" :key="index">
+					<text class="label">{{ item.label }}</text>
 
-				<view class="list">
-					<view
-						class="item"
-						v-for="(item2, index2) in item.children"
-						:key="index2"
-						@tap="toLink(item2.path)"
-					>
-						<text class="label">{{ item2.label }}</text>
+					<view class="list">
+						<view
+							class="item"
+							v-for="(item2, index2) in item.children"
+							:key="index2"
+							@tap="toLink(item2.path)"
+						>
+							<text class="name">{{ item2.label }}</text>
 
-						<cl-icon name="arrow-right" color="info"></cl-icon>
+							<cl-icon name="arrow-right" color="info"></cl-icon>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -32,7 +47,7 @@
 import { useApp, useCool, module } from "/@/cool";
 import { useUi } from "/$/cool-ui";
 import Tabbar from "./components/tabbar.vue";
-import { onReady } from "@dcloudio/uni-app";
+import { onPageScroll, onReady } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import { isEmpty } from "lodash-es";
 
@@ -40,226 +55,32 @@ const { router, service } = useCool();
 const ui = useUi();
 const app = useApp();
 
+const scrollTop = ref(0);
+
+onPageScroll((e) => {
+	scrollTop.value = e.scrollTop;
+});
+
 const list = ref([
 	{
 		label: "基础组件",
-		children: [
-			{
-				label: "Button 按钮",
-				path: "/pages/demo/basic/button",
-			},
-			{
-				label: "Text 文本",
-				path: "/pages/demo/basic/text",
-			},
-			{
-				label: "Image 图片",
-				path: "/pages/demo/basic/image",
-			},
-			{
-				label: "Icon 图标",
-				path: "/pages/demo/basic/icon",
-			},
-			{
-				label: "Tag 标签",
-				path: "/pages/demo/basic/tag",
-			},
-			{
-				label: "Toast 提示",
-				path: "/pages/demo/basic/toast",
-			},
-			{
-				label: "Loading 加载",
-				path: "/pages/demo/basic/loading",
-			},
-		],
+		value: "basic",
+		children: [] as any[],
 	},
 	{
 		label: "表单组件",
-		children: [
-			{
-				label: "Input 输入框",
-				path: "/pages/demo/form/input",
-			},
-			{
-				label: "InputNumber 计数器",
-				path: "/pages/demo/form/input-number",
-			},
-			{
-				label: "Textarea 文本域",
-				path: "/pages/demo/form/textarea",
-			},
-			{
-				label: "Checkbox 多选框",
-				path: "/pages/demo/form/checkbox",
-			},
-			{
-				label: "Radio 单选框",
-				path: "/pages/demo/form/radio",
-			},
-			{
-				label: "Select 下拉框",
-				path: "/pages/demo/form/select",
-			},
-			{
-				label: "SelectDate 时间选择器",
-				path: "/pages/demo/form/select-date",
-			},
-			{
-				label: "SelectPopup 下拉框弹窗",
-				path: "/pages/demo/form/select-popup",
-			},
-			{
-				label: "SelectCity 城市选择器",
-				path: "/pages/demo/form/select-city",
-			},
-			{
-				label: "Rate 评分",
-				path: "/pages/demo/form/rate",
-			},
-			{
-				label: "Switch 开关",
-				path: "/pages/demo/form/switch",
-			},
-			{
-				label: "Upload 文件上传",
-				path: "/pages/demo/form/upload",
-			},
-			{
-				label: "Form 表单",
-				path: "/pages/demo/form/form",
-			},
-		],
+		value: "form",
+		children: [],
 	},
 	{
 		label: "视图组件",
-		children: [
-			{
-				label: "Avatar 头像",
-				path: "/pages/demo/view/avatar",
-			},
-			{
-				label: "Badge 角标",
-				path: "/pages/demo/view/badge",
-			},
-			{
-				label: "Banner 轮播图",
-				path: "/pages/demo/view/banner",
-			},
-			{
-				label: "Card 卡片",
-				path: "/pages/demo/view/card",
-			},
-			{
-				label: "Countdown 倒计时",
-				path: "/pages/demo/view/countdown",
-			},
-			{
-				label: "Divider 分割线",
-				path: "/pages/demo/view/divider",
-			},
-			{
-				label: "Flex 弹性",
-				path: "/pages/demo/view/flex",
-			},
-			{
-				label: "Grid 宫格",
-				path: "/pages/demo/view/grid",
-			},
-			{
-				label: "List 列表",
-				path: "/pages/demo/view/list",
-			},
-			{
-				label: "ListIndex 索引列表",
-				path: "/pages/demo/view/list-index",
-			},
-			{
-				label: "Loadmore 加载更多",
-				path: "/pages/demo/view/loadmore",
-			},
-			{
-				label: "Noticebar 通知栏",
-				path: "/pages/demo/view/noticebar",
-			},
-			{
-				label: "Popup 弹出框",
-				path: "/pages/demo/view/popup",
-			},
-			{
-				label: "Progress 进度条",
-				path: "/pages/demo/view/progress",
-			},
-			{
-				label: "Search 搜索框",
-				path: "/pages/demo/view/search",
-			},
-			{
-				label: "Slider 滑块",
-				path: "/pages/demo/view/slider",
-			},
-			{
-				label: "Tabs 选项卡",
-				path: "/pages/demo/view/tabs",
-			},
-			{
-				label: "Timeline 时间线",
-				path: "/pages/demo/view/timeline",
-			},
-			{
-				label: "Topbar 顶部导航栏",
-				path: "/pages/demo/view/topbar",
-			},
-			{
-				label: "Waterfall 瀑布流",
-				path: "/pages/demo/view/waterfall",
-			},
-			{
-				label: "Scroller 滚动条",
-				path: "/pages/demo/view/scroller",
-			},
-			{
-				label: "Skeleton 骨架图",
-				path: "/pages/demo/view/skeleton",
-			},
-		],
+		value: "view",
+		children: [],
 	},
 	{
 		label: "高级组件",
-		children: [
-			{
-				label: "ActionSheet 操作菜单",
-				path: "/pages/demo/extend/action-sheet",
-			},
-			{
-				label: "Captcha 验证码",
-				path: "/pages/demo/extend/captcha",
-			},
-			{
-				label: "Confirm 确认框",
-				path: "/pages/demo/extend/confirm",
-			},
-			{
-				label: "Dialog 对话框",
-				path: "/pages/demo/extend/dialog",
-			},
-			{
-				label: "FilterBar 过滤栏",
-				path: "/pages/demo/extend/filter-bar",
-			},
-			{
-				label: "Page 页面",
-				path: "/pages/demo/extend/page",
-			},
-			{
-				label: "Tree 树形",
-				path: "/pages/demo/extend/tree",
-			},
-			{
-				label: "Service 服务",
-				path: "/pages/demo/extend/service",
-			},
-		],
+		value: "extend",
+		children: [],
 	},
 ]);
 
@@ -271,11 +92,29 @@ function toLink(path: string) {
 }
 
 onReady(() => {
+	// cool-ui 示例
+	router.routes.forEach((e) => {
+		if (e.path.includes("pages/demo")) {
+			const [, , key] = e.path.split("/");
+
+			const item = list.value.find((e) => e.value == key);
+
+			if (item) {
+				item.children.push({
+					label: e.style.navigationBarTitleText,
+					path: "/" + e.path,
+				});
+			}
+		}
+	});
+
+	// 插件示例
 	const children = module.list.filter((e) => e.demo).map((e) => e.demo!);
 
 	if (!isEmpty(children)) {
 		list.value.unshift({
 			label: "插件 / 模块",
+			value: "plugin",
 			children,
 		});
 	}
@@ -283,29 +122,57 @@ onReady(() => {
 </script>
 
 <style lang="scss" scoped>
+@mixin title {
+	background: linear-gradient(to right, #6b69f8, #a35df2, #d14bd8);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: bold;
+}
+
 .page-home {
+	.title {
+		font-size: 32rpx;
+		padding: 0 24rpx;
+		opacity: 0;
+		transition: opacity 0.5s ease-in-out;
+		@include title();
+
+		&.show {
+			opacity: 1;
+		}
+	}
+
 	.logo {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 150rpx 0 100rpx 0;
-		height: 60rpx;
+		padding: 20rpx 0 100rpx 0;
 		font-weight: bold;
 
 		.name {
 			font-size: 80rpx;
 			animation: showName 2.5s forwards;
-			background: linear-gradient(to right, #6b69f8, #a35df2, #d14bd8);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
+			@include title();
+		}
+
+		.desc,
+		.version {
+			font-size: 28rpx;
+			margin-top: 10rpx;
+			animation: showV 2.5s forwards;
+		}
+
+		.desc {
+			color: #444;
 		}
 
 		.version {
-			margin-top: 10rpx;
-			font-size: 28rpx;
-			color: #666;
-			animation: showV 2.5s forwards;
+			background-color: $cl-color-primary;
+			color: #fff;
+			padding: 4rpx 10rpx;
+			border-radius: 10rpx;
+			margin-top: 20rpx;
 		}
 	}
 
@@ -340,10 +207,15 @@ onReady(() => {
 		}
 	}
 
+	.container {
+		border-radius: 64rpx 64rpx 0 0;
+		background-color: $cl-color-bg;
+	}
+
 	.group {
 		padding: 30rpx;
 
-		.title {
+		.label {
 			display: block;
 			margin-bottom: 20rpx;
 			margin-left: 10rpx;
@@ -362,7 +234,7 @@ onReady(() => {
 				border-radius: 80rpx;
 				box-shadow: 0 1rpx 8rpx #6666660f;
 
-				.label {
+				.name {
 					flex: 1;
 					font-size: 28rpx;
 					font-weight: bold;

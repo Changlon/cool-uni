@@ -37,7 +37,7 @@
 		</cl-card>
 
 		<cl-card label="块状">
-			<cl-tabs v-model="active2" :list="list2" :show-line="false" :show-silder="true" />
+			<cl-tabs v-model="active2" :list="list2" :show-line="false" :show-slider="true" />
 		</cl-card>
 
 		<cl-card label="自定义">
