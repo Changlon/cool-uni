@@ -51,7 +51,12 @@
 			</view>
 
 			<!-- 拖动 -->
-			<view class="cl-slider-verify__drag" :class="[`is-${status}`]" @touchend="onTouchend">
+			<view
+				class="cl-slider-verify__drag"
+				:class="[`is-${status}`]"
+				@touchend="onTouchend"
+				@mouseup="onTouchend"
+			>
 				<view
 					class="cl-slider-verify__drag-active"
 					:class="{
