@@ -64,7 +64,7 @@ const router = {
 	// 路由列表
 	routes,
 
-	// 地址栏参数
+	// 跳转参数（地址栏）
 	get query() {
 		const info = this.info();
 
@@ -73,12 +73,12 @@ const router = {
 		};
 	},
 
-	// 临时参数
+	// 跳转参数（缓存）
 	get params() {
 		return storage.get("router-params") || {};
 	},
 
-	// 页面地址
+	// 页面路径
 	get pages() {
 		return {
 			home: "/" + (ctx.tabBar ? this.tabs[0].pagePath : ctx.pages[0].path),
@@ -86,12 +86,12 @@ const router = {
 		};
 	},
 
-	// 当前页
+	// 当前页面信息
 	currentPage(): { [key: string]: any } {
 		return last(getCurrentPages())!;
 	},
 
-	// 当前页
+	// 当前路由路径
 	get path() {
 		return router.info()?.path;
 	},
@@ -135,7 +135,7 @@ const router = {
 		}
 	},
 
-	// 跳转
+	// 路由跳转
 	push(options: PushOptions) {
 		if (typeof options == "string") {
 			options = {
@@ -256,7 +256,7 @@ const router = {
 		this.push(this.pages.home);
 	},
 
-	// tabbar
+	// 跳转 Tab 页
 	switchTab(name: string) {
 		let item = this.tabs.find((e) => e.pagePath.includes(name));
 
@@ -270,7 +270,7 @@ const router = {
 		}
 	},
 
-	// 是否是Tab页
+	// 是否是 Tab 页
 	isTab(path: string) {
 		return !!this.tabs.find((e) => path == `/${e.pagePath}`);
 	},

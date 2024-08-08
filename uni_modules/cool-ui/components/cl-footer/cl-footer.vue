@@ -14,6 +14,7 @@
 			}"
 			:style="{
 				backgroundColor,
+				backdropFilter,
 				visibility: visible ? 'visible' : 'hidden',
 				bottom: parseRpx(bottom),
 				zIndex,
@@ -59,6 +60,8 @@ export default defineComponent({
 			type: String,
 			default: "#fff",
 		},
+		// 背景模糊
+		backdropFilter: String,
 		// 內间距
 		padding: {
 			type: [String, Number],

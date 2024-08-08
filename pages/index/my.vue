@@ -2,7 +2,7 @@
 	<cl-page status-bar-background="transparent">
 		<!-- #ifdef MP -->
 		<cl-sticky>
-			<cl-topbar :border="false" background-color="transparent"></cl-topbar>
+			<cl-topbar :show-back="false" :border="false" background-color="transparent" />
 		</cl-sticky>
 		<!-- #endif -->
 
@@ -21,12 +21,12 @@
 				</view>
 			</view>
 
-			<view class="user">
+			<view class="user" @tap="toEdit">
 				<cl-avatar :src="user.info?.avatarUrl" :size="100" />
 
 				<view class="det">
 					<cl-text :size="32" block :margin="[0, 0, 8, 0]">{{
-						user.info?.nickName
+						user.info?.nickName || "未登录"
 					}}</cl-text>
 					<cl-text :size="24" color="info">写签名会更容易获得别人的关注哦～</cl-text>
 				</view>
@@ -59,7 +59,7 @@
 					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">接单模式</cl-text>
 					<cl-text :size="24" color="info">已关闭</cl-text>
 
-					<view class="switch">
+					<view class="inner">
 						<cl-switch />
 					</view>
 				</view>
@@ -68,7 +68,7 @@
 					<cl-text :size="28" bold block :margin="[0, 0, 10, 0]">消息通知</cl-text>
 					<cl-text :size="24" color="info">已开启</cl-text>
 
-					<view class="switch">
+					<view class="inner">
 						<cl-switch />
 					</view>
 				</view>
@@ -148,7 +148,7 @@ async function refresh() {
 	if (user.token) {
 		await user.get();
 	} else {
-		user.logout();
+		// user.logout();
 	}
 }
 
@@ -290,7 +290,7 @@ $gap: 24rpx;
 			background-color: #fff;
 			position: relative;
 
-			.switch {
+			.inner {
 				position: absolute;
 				right: 24rpx;
 				top: calc(50% - 30rpx);

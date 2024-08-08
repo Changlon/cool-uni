@@ -35,6 +35,13 @@
 			</cl-radio-group>
 		</cl-card>
 
+		<cl-card label="带背景">
+			<cl-radio-group v-model="v6" text border bg>
+				<cl-radio label="1">炸鸡</cl-radio>
+				<cl-radio label="2">汉堡</cl-radio>
+			</cl-radio-group>
+		</cl-card>
+
 		<cl-card label="圆角">
 			<cl-radio-group v-model="v7" round border>
 				<cl-radio label="1">炸鸡</cl-radio>

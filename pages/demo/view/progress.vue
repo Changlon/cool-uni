@@ -15,10 +15,12 @@
 		<cl-card label="自定义">
 			<cl-progress :value="val">
 				<template #text>
-					<text v-if="val >= 90">优</text>
-					<text v-else-if="val >= 80">良</text>
-					<text v-else-if="val >= 60">及格</text>
-					<text v-else>{{ val }}</text>
+					<cl-row :padding="[0, 0, 0, 15]">
+						<cl-text v-if="val >= 90">优</cl-text>
+						<cl-text v-else-if="val >= 80">良</cl-text>
+						<cl-text v-else-if="val >= 60">及格</cl-text>
+						<cl-text v-else>{{ val }}</cl-text>
+					</cl-row>
 				</template>
 			</cl-progress>
 		</cl-card>

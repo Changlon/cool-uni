@@ -24,6 +24,8 @@ export default defineComponent({
 		},
 		// 是否边框样式
 		border: Boolean,
+		// 是否带背景色
+		bg: Boolean,
 		// 是否禁用
 		disabled: Boolean,
 		// 是否圆角

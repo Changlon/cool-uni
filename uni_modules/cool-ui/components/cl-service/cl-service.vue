@@ -1,6 +1,6 @@
 <template>
 	<cl-loading-mask
-		:loading="mask.loading && loading"
+		:loading="mask.loading && !mask.disabled && loading"
 		:modal="mask.modal"
 		:color="mask.color"
 		:text="mask.text"
@@ -13,7 +13,20 @@
 </template>
 
 <script lang="ts">
+import { assign } from "lodash-es";
+import type { PropType } from "vue";
 import { ref, onMounted, defineComponent, computed } from "vue";
+
+interface Mask {
+	loading: boolean;
+	modal: boolean;
+	fullscreen: boolean;
+	color: string;
+	text: string;
+	background: string;
+	loadingTheme: string;
+	disabled: Boolean;
+}
 
 export default defineComponent({
 	name: "cl-service",
@@ -21,7 +34,7 @@ export default defineComponent({
 	props: {
 		service: null,
 		mask: {
-			type: Object,
+			type: Object as PropType<Mask>,
 			default() {
 				return {};
 			},
@@ -41,13 +54,13 @@ export default defineComponent({
 
 		// 遮罩层
 		const mask = computed(() => {
-			return Object.assign(
+			return assign(
 				{
 					loading: true,
 					modal: true,
 					fullscreen: false,
 				},
-				props.mask || {}
+				props.mask || {},
 			);
 		});
 

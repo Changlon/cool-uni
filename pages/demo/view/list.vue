@@ -20,7 +20,7 @@
 
 		<cl-card label="禁用">
 			<cl-list-item label="银行卡" disabled>
-				<text>兴业银行(***1113)</text>
+				<cl-text color="disabled">兴业银行(***1113)</cl-text>
 			</cl-list-item>
 		</cl-card>
 

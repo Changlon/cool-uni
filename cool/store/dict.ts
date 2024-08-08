@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, reactive, toRaw } from "vue";
-import { deepTree } from "../utils";
+import { deepTree, isEmpty } from "../utils";
 import { service } from "../service";
 import { isDev } from "/@/config";
 import { isString } from "lodash-es";
@@ -10,6 +10,7 @@ const useDictStore = defineStore("dict", () => {
 	// 对象数据
 	const data = reactive<Dict.Data>({});
 
+	// 获取数据列表
 	function get(name: string) {
 		return computed(() => data[name]).value || [];
 	}
@@ -38,7 +39,7 @@ const useDictStore = defineStore("dict", () => {
 				for (const [i, arr] of Object.entries(res)) {
 					arr.forEach((e) => {
 						e.label = e.name;
-						e.value = e.value !== undefined ? e.value : e.id;
+						e.value = isEmpty(e.value) ? e.id : e.value;
 					});
 
 					d[i] = deepTree(arr, "desc");

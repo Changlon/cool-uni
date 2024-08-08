@@ -24,9 +24,7 @@
 		</template>
 
 		<template #confirm>
-			<cl-button round fill type="primary" size="large" :disabled="!isChecked" @tap="save"
-				>确定</cl-button
-			>
+			<cl-button custom type="primary" :disabled="!isChecked" @tap="save">确定</cl-button>
 		</template>
 	</cl-select-popup>
 </template>

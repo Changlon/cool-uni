@@ -1,22 +1,26 @@
 <template>
 	<cl-page :padding="20">
 		<cl-card label="基础用法">
-			<cl-service :service="get()" :mask="{ text: '加载中' }">
+			<cl-service :service="get()" :mask="{ text: '获取数据中' }">
 				<template #default="{ data }">
 					<view class="count">
 						<view class="item">
-							<text class="cl-icon-favor-fill"></text>
-							<text>{{ data?.star || 0 }}</text>
+							<cl-icon name="favor-fill" :size="40" :margin="[0, 0, 20, 0]"></cl-icon>
+							<cl-text>{{ data?.star || 0 }}</cl-text>
 						</view>
 
 						<view class="item">
-							<text class="cl-icon-chart-pie"></text>
-							<text>{{ data?.count || 0 }}</text>
+							<cl-icon name="chart-pie" :size="40" :margin="[0, 0, 20, 0]"></cl-icon>
+							<cl-text>{{ data?.count || 0 }}</cl-text>
 						</view>
 
 						<view class="item">
-							<text class="cl-icon-wallet-fill"></text>
-							<text>{{ data?.wallet || 0 }}元</text>
+							<cl-icon
+								name="wallet-fill"
+								:size="40"
+								:margin="[0, 0, 20, 0]"
+							></cl-icon>
+							<cl-text>{{ data?.wallet || 0 }}元</cl-text>
 						</view>
 					</view>
 				</template>
@@ -26,8 +30,11 @@
 </template>
 
 <script lang="ts" setup>
-// 模拟 service 请求，实际使用示例：service.test.page()
 function get() {
+	// 实际使用示例
+	// return service.xxx.count()
+
+	// 模拟 service 请求
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve({

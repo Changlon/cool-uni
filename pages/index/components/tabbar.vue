@@ -10,11 +10,11 @@
 				}"
 				@tap="toLink(item.pagePath)"
 			>
-				<view class="custom" v-if="item.pagePath == 'custom'">
+				<template v-if="item.pagePath == 'custom'">
 					<view class="icon">
-						<image src="/static/chat.png" mode="aspectFit" />
+						<image src="https://cool-js.com/logo.png" mode="aspectFit" />
 					</view>
-				</view>
+				</template>
 
 				<template v-else>
 					<view class="icon">
@@ -69,6 +69,8 @@ uni.hideTabBar();
 </script>
 
 <style lang="scss" scoped>
+$icon-size: 56rpx;
+
 .tabbar {
 	display: flex;
 	height: 120rpx;
@@ -83,8 +85,8 @@ uni.hideTabBar();
 		position: relative;
 
 		.icon {
-			height: 46rpx;
-			width: 46rpx;
+			height: $icon-size;
+			width: $icon-size;
 
 			image {
 				height: 100%;
@@ -93,7 +95,7 @@ uni.hideTabBar();
 		}
 
 		.label {
-			font-size: 24rpx;
+			font-size: 22rpx;
 			color: #bfbfbf;
 		}
 
@@ -124,9 +126,11 @@ uni.hideTabBar();
 
 		.custom {
 			display: flex;
+			flex-direction: column;
 			align-items: center;
 			justify-content: center;
 			height: 100%;
+			position: relative;
 
 			.icon {
 				background: linear-gradient(
@@ -137,8 +141,7 @@ uni.hideTabBar();
 					#d14bd8,
 					#e9388a
 				);
-				border-radius: 100%;
-				padding: 16rpx;
+				border-radius: 18rpx;
 			}
 		}
 	}

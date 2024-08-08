@@ -51,11 +51,8 @@ function open2() {
 
 function open3() {
 	ActionSheet.value?.open({
+		title: "删除好友会同时删除所有聊天记录",
 		list: [
-			{
-				label: "删除好友会同时删除所有聊天记录",
-				disabled: true,
-			},
 			{
 				label: "删除好友",
 				color: "red",

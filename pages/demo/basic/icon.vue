@@ -8,16 +8,60 @@
 
 		<cl-card label="颜色">
 			<cl-icon name="like" color="primary"></cl-icon>
-			<cl-icon name="like" color="red"></cl-icon>
-			<cl-icon name="like" color="green"></cl-icon>
+			<cl-icon name="like" color="error"></cl-icon>
+			<cl-icon name="like" color="success"></cl-icon>
 		</cl-card>
 
-		<cl-card label="所有图标">
+		<cl-card label="方向">
+			<cl-grid :column="4">
+				<cl-grid-item v-for="item in arrow" :key="item">
+					<view class="item" @tap="copy(item)">
+						<cl-icon :name="item" :size="44"></cl-icon>
+						<cl-text :value="item" align="center" :margin="[15, 10, 0, 10]" />
+					</view>
+				</cl-grid-item>
+			</cl-grid>
+		</cl-card>
+
+		<cl-card label="操作">
+			<cl-grid :column="4">
+				<cl-grid-item v-for="item in op" :key="item">
+					<view class="item" @tap="copy(item)">
+						<cl-icon :name="item" :size="44"></cl-icon>
+						<cl-text :value="item" align="center" :margin="[15, 10, 0, 10]" />
+					</view>
+				</cl-grid-item>
+			</cl-grid>
+		</cl-card>
+
+		<cl-card label="展示">
+			<cl-grid :column="4">
+				<cl-grid-item v-for="item in dis" :key="item">
+					<view class="item" @tap="copy(item)">
+						<cl-icon :name="item" :size="44"></cl-icon>
+						<cl-text :value="item" align="center" :margin="[15, 10, 0, 10]" />
+					</view>
+				</cl-grid-item>
+			</cl-grid>
+		</cl-card>
+
+		<cl-card label="圆形">
+			<cl-grid :column="4">
+				<cl-grid-item v-for="item in circular" :key="item">
+					<view class="item" @tap="copy(item)">
+						<cl-icon :name="item" :size="44"></cl-icon>
+						<cl-text :value="item" align="center" :margin="[15, 10, 0, 10]" />
+					</view>
+				</cl-grid-item>
+			</cl-grid>
+		</cl-card>
+
+		<cl-card label="其他">
 			<cl-grid :column="4">
 				<cl-grid-item v-for="item in list" :key="item">
 					<view class="item" @tap="copy(item)">
 						<cl-icon :name="item" :size="44"></cl-icon>
-						<cl-text :value="item" align="center" :margin="[10, 0, 0, 0]" />
+						<cl-text :value="item" align="center" :margin="[15, 10, 0, 10]" />
 					</view>
 				</cl-grid-item>
 			</cl-grid>
@@ -28,7 +72,91 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
+const arrow = ref([
+	"top",
+	"back-top",
+	"upgrade",
+	"",
+	"back",
+	"enter",
+	"",
+	"",
+	"arrow-double-left",
+	"arrow-double-right",
+	"",
+	"",
+	"arrow-bottom",
+	"arrow-top",
+	"arrow-left",
+	"arrow-right",
+	"caret-bottom",
+	"caret-top",
+]);
+
+const op = ref([
+	"plus",
+	"minus",
+	"plus-border",
+	"minus-border",
+	"enlarge",
+	"shrink",
+	"",
+	"",
+	"check",
+	"close",
+	"success-fill",
+	"delete-fill",
+	"toast-success",
+	"toast-error",
+	"",
+	"",
+	"cloud-download",
+	"cloud-upload",
+	"delete",
+	"stop",
+]);
+
+const dis = ref([
+	"meh",
+	"meh-fill",
+	"cry",
+	"cry-fill",
+	"smile",
+	"smile-fill",
+	"like",
+	"like-fill",
+	"location",
+	"location-fill",
+	"notification",
+	"notification-fill",
+	"eye-open",
+	"eye-close",
+	"favor-fill",
+	"good-fill",
+]);
+
+const circular = ref([
+	"chart-pie",
+	"play",
+	"more",
+	"keyboard-9",
+	"keyboard-26",
+	"time",
+	"refresh",
+	"check-border",
+	"close-border",
+	"help-border",
+	"warning-border",
+	"toast-waiting",
+	"clock-fill",
+	"help-fill",
+	"prompt-fill",
+]);
+
 const list = ref([
+	"exit",
+	"qrcode",
+	"msg",
 	"app",
 	"payment",
 	"face-auth",
@@ -37,91 +165,31 @@ const list = ref([
 	"phone",
 	"share",
 	"link",
-	"back",
-	"enter",
-	"top",
-	"upgrade",
 	"rise",
 	"decline",
 	"active",
-	"shrink",
 	"cropper",
 	"fullscreen",
-	"enlarge",
 	"chart-bar",
-	"chart-pie",
-	"my",
-	"eye-open",
-	"eye-close",
-	"cloud-download",
-	"cloud-upload",
-	"like",
-	"like-fill",
-	"arrow-double-left",
-	"arrow-double-right",
-	"arrow-bottom",
-	"arrow-top",
-	"arrow-left",
-	"arrow-right",
 	"set",
-	"stop",
-	"play",
-	"more",
-	"back-top",
 	"map",
-	"keyboard-9",
-	"keyboard-26",
 	"calendar",
 	"customer-service",
 	"edit",
 	"scan",
 	"pay",
 	"image",
-	"image-error",
-	"time",
-	"meh",
-	"cry",
-	"smile",
-	"refresh",
-	"caret-bottom",
-	"caret-top",
-	"notification",
 	"search",
-	"plus",
-	"minus",
-	"check",
-	"close",
-	"plus-border",
-	"minus-border",
-	"check-border",
-	"close-border",
-	"help-border",
-	"warning-border",
-	"toast-success",
-	"toast-waiting",
 	"toast-warning",
-	"toast-error",
-	"clock-fill",
-	"favor-fill",
-	"help-fill",
 	"history-fill",
-	"smile-fill",
-	"success-fill",
-	"delete-fill",
-	"map-fill",
-	"prompt-fill",
-	"meh-fill",
-	"cry-fill",
 	"amount-fill",
 	"wallet-fill",
 	"doc-fill",
-	"good-fill",
 	"camera-fill",
 	"mail-fill",
 	"bank-card-fill",
 	"relay-fill",
 	"comment-fill",
-	"notification-fill",
 ]);
 
 function copy(name: string) {

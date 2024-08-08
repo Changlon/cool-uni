@@ -18,7 +18,7 @@
 			{
 				color,
 				textAlign: align,
-				lineHeight: lineHeight,
+				lineHeight,
 				fontSize: parseRpx(size),
 				letterSpacing: parseRpx(letterSpacing),
 			},

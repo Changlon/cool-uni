@@ -42,6 +42,11 @@ export default defineComponent({
 			type: Boolean,
 			default: null,
 		},
+		// 是否带背景色
+		bg: {
+			type: Boolean,
+			default: null,
+		},
 		// 是否圆角
 		round: {
 			type: Boolean,
@@ -70,6 +75,7 @@ export default defineComponent({
 			"disabled",
 			"size",
 			"text",
+			"bg",
 			"onChange",
 		]);
 
@@ -96,7 +102,7 @@ export default defineComponent({
 				"is-checked": checked.value,
 			};
 
-			["border", "fill", "text", "round"].forEach((k) => {
+			["border", "fill", "text", "round", "bg"].forEach((k) => {
 				// @ts-ignore
 				d[`is-${k}`] = isBoolean(props[k]) ? props[k] : parent.value?.[k];
 			});

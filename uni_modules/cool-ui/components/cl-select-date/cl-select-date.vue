@@ -35,7 +35,7 @@
 		</template>
 
 		<template #confirm>
-			<cl-button type="primary" size="large" round fill @tap="confirm">选择</cl-button>
+			<cl-button type="primary" custom @tap="confirm">选择</cl-button>
 		</template>
 	</cl-select-popup>
 </template>
